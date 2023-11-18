@@ -20,7 +20,8 @@ export const loginUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       if (error.response) {
-        const message = error.response.data.msg;
+        const message = error.response.data.message;
+        console.log(message);
         return thunkAPI.rejectWithValue(message);
       }
     }
@@ -30,10 +31,11 @@ export const loginUser = createAsyncThunk(
 export const getMe = createAsyncThunk("user/getMe", async (_, thunkAPI) => {
   try {
     const response = await axios.get("http://localhost:5000/me");
+
     return response.data;
   } catch (error) {
     if (error.response) {
-      const message = error.response.data.msg;
+      const message = error.response.data.message;
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -64,7 +66,6 @@ export const authSlice = createSlice({
       state.message = action.payload;
     });
 
-    // Get User Login
     builder.addCase(getMe.pending, (state) => {
       state.isLoading = true;
     });

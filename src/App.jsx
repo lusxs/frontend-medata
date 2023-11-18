@@ -1,12 +1,105 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Loading from "./components/common/loading/Loading";
+import Statistics from "./pages/admin/Statistics";
+import Account from "./pages/admin/Account";
+import Purposes from "./pages/admin/Purposes";
+import Report from "./pages/admin/Report";
+import Visitors from "./pages/admin/Visitors";
+
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Form = lazy(() => import("./pages/Form"));
+const DashboardSecretary = lazy(() =>
+  import("./pages/secretary/DashboardSecretary")
+);
+const DashboardDivision = lazy(() =>
+  import("./pages/division/DashboardDivision")
+);
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<h1>Hello World</h1>} />
-          <Route path="/about" element={<h1>About</h1>} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Form />
+              </Suspense>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
+          {/* Admin */}
+          <Route
+            path="/dashboard"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/statistics"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Statistics />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Account />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/purposes"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Purposes />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/visitors"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Visitors />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/report"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Report />
+              </Suspense>
+            }
+          />
+          {/* Secretary */}
+          <Route
+            path="/secretary/dashboard"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DashboardSecretary />
+              </Suspense>
+            }
+          />
+          {/* Division */}
+          <Route
+            path="/division/dashboard"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DashboardDivision />
+              </Suspense>
+            }
+          />
         </Routes>
       </Router>
     </>
