@@ -40,7 +40,7 @@ const LineChart = ({ data }) => {
   };
 
   return (
-    <div className="p-4 box__shadow__chart">
+    <div className="p-4 box__shadow">
       <Line data={chartData} />
     </div>
   );

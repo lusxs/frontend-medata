@@ -1,6 +1,6 @@
 import { FaXmark } from "react-icons/fa6";
 
-const ModalError = () => {
+const ModalError = ({ message }) => {
   return (
     <>
       <div
@@ -14,13 +14,10 @@ const ModalError = () => {
             </div>
           </div>
           <div className="-mt-12 rounded-lg border-2 border-[#E5E9F2] bg-white p-4 pt-14 pb-4 text-center">
-            <h5 className="text-xl font-bold text-center">Tidak Berhasil</h5>
+            <h5 className="text-xl font-bold text-center">Gagal</h5>
             <p className="mt-4 font-semibold text-center text-gray-500">
-              Data Tidak Berhasil Ditambahkan
+              {message}
             </p>
-            <button className=" uppercase focus:outline-none mt-6 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
-              Oke
-            </button>
           </div>
         </div>
       </div>

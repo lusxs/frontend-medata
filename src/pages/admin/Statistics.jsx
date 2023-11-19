@@ -5,7 +5,7 @@ const Statistics = () => {
   const chartData = [1, 2, 3, 5];
   return (
     <DefaultLayout>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-2 gap-4">
         <LineChart data={chartData} />
         <LineChart data={chartData} />
         <LineChart data={chartData} />

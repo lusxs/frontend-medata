@@ -2,31 +2,65 @@ import { useState } from "react";
 import axios from "axios";
 import DefaultLayout from "../../layout/DefaultLayout";
 import ReactPaginate from "react-paginate";
+import ModalUpdatePurpose from "../../components/common/modal/ModalUpdatePurpose";
 import { useEffect } from "react";
 
 const Purposes = () => {
   const [data, setData] = useState([]);
+  const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
+  const [page, setPage] = useState(0);
+  const limit = 5;
+  const [pages, setPages] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchPurposes = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/purposes");
-      console.log(response.data);
+      const response = await axios.get(
+        `http://localhost:5000/purposes?search_query=${keyword}&page=${page}&limit=${limit}`
+      );
+      setPage(response.data.page);
+      setPages(response.data.totalPage);
+      setRows(response.data.totalRows);
       setData(response.data.result);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchPurposes();
-  }, []);
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+    setMessage(
+      selected === 9
+        ? "Jika tidak menemukan data yang Anda cari, silahkan cari data dengan kata kunci spesifik!"
+        : ""
+    );
+  };
+
+  const searchData = (e) => {
+    e.preventDefault();
+    setPage(0);
+    setMessage("");
+    setKeyword(query);
+  };
+
   return (
     <DefaultLayout>
+      {isOpenModalUpdate && (
+        <ModalUpdatePurpose setIsOpenModalUpdate={setIsOpenModalUpdate} />
+      )}
       <h5 className="mt-6 mb-4 text-xl font-semibold">
         Data Kelola Maksud Tujuan
       </h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-end mb-4">
-          <form>
+          <form onSubmit={searchData}>
             <div className="flex">
               <label
                 htmlFor="search"
@@ -38,7 +72,7 @@ const Purposes = () => {
               <div className="relative w-full">
                 <input
                   type="search"
-                  // onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => setQuery(e.target.value)}
                   id="search"
                   className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
                   placeholder="Cari"
@@ -90,6 +124,9 @@ const Purposes = () => {
                 </div>
               </th>
               <th scope="col" className="px-6 py-3">
+                <div className="flex items-center">Bidang</div>
+              </th>
+              <th scope="col" className="px-6 py-3">
                 <div className="flex items-center">Aksi</div>
               </th>
             </tr>
@@ -104,13 +141,21 @@ const Purposes = () => {
                   {number + 1}
                 </td>
                 <td className="px-6 py-4 uppercase">{item.name}</td>
-                <td className="px-6 py-4 uppercase">11 November 2023</td>
+                <td className="px-6 py-4 uppercase">{item.division.name}</td>
+                <td className="px-6 py-4 uppercase">
+                  <button
+                    className="btn-primary"
+                    onClick={() => setIsOpenModalUpdate(true)}
+                  >
+                    Edit
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* <div className="flex justify-center mt-4 rounded-sm">
+        <div className="flex justify-center mt-4 rounded-sm">
           <nav
             className=""
             key={rows}
@@ -138,7 +183,7 @@ const Purposes = () => {
               disabledLinkClassName={"pagination-link is-disabled"}
             />
           </nav>
-        </div> */}
+        </div>
       </div>
     </DefaultLayout>
   );
