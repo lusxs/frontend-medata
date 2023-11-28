@@ -13,7 +13,9 @@ import ModalLogout from "../components/common/modal/ModalLogout";
 import PropTypes from "prop-types";
 
 const DefaultLayout = ({ children }) => {
-  const { isError } = useSelector((state) => state.auth);
+  const { isError, user } = useSelector((state) => state.auth);
+  const isAdmin = user && user.role === "admin";
+  const isSecretary = user && user.role === "secretary";
 
   const [isModalLogout, setIsModalLogout] = useState(false);
   const dispatch = useDispatch();
@@ -30,25 +32,36 @@ const DefaultLayout = ({ children }) => {
 
   const menus = [
     { name: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
-    { name: "Statistik", link: "/statistics", icon: MdOutlineDashboard },
-    { name: "Kelola Akun", link: "/users", icon: AiOutlineUser },
-    {
-      name: "Kelola Maksud Tujuan",
-      link: "/purposes",
-      icon: TbReportAnalytics,
-    },
+    ...(isAdmin || isSecretary
+      ? [{ name: "Statistik", link: "/statistics", icon: MdOutlineDashboard }]
+      : []),
+    ...(isAdmin
+      ? [
+          { name: "Kelola Akun", link: "/users", icon: AiOutlineUser },
+          {
+            name: "Kelola Maksud Tujuan",
+            link: "/purposes",
+            icon: TbReportAnalytics,
+          },
+        ]
+      : []),
     {
       name: "Data Pengunjung",
       link: "/visitors",
       icon: TbReportAnalytics,
     },
-    {
-      name: "Laporan",
-      link: "/report",
-      icon: TbReportAnalytics,
-      margin: true,
-    },
+    ...(user && user.role !== "secretary"
+      ? [
+          {
+            name: "Laporan",
+            link: "/report",
+            icon: TbReportAnalytics,
+            margin: true,
+          },
+        ]
+      : []),
   ];
+
   const [open, setOpen] = useState(true);
   const location = useLocation();
 
@@ -140,10 +153,10 @@ const DefaultLayout = ({ children }) => {
       <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
         <header className="sticky top-0 flex w-full p-4 py-8 bg-white z-index drop-shadow-1 box__shadow"></header>
         <main className="h-screen p-4 md:p-6 2xl:p-10">{children}</main>
-        <footer className="sticky bottom-0 flex w-full p-4 bg-white z-index drop-shadow-1 box__shadow">
+        {/* <footer className="sticky bottom-0 flex w-full p-4 bg-white z-index drop-shadow-1 box__shadow">
           Copyright © 2023 - All right reserved by Dinas Sosial Kabupaten
           Minahasa
-        </footer>
+        </footer> */}
       </div>
       <ModalLogout
         isOpen={isModalLogout}

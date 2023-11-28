@@ -9,7 +9,7 @@ import Purposes from "./pages/admin/Purposes";
 import Report from "./pages/admin/Report";
 import Visitors from "./pages/admin/Visitors";
 
-const Dashboard = lazy(() => import("./pages/admin/Dashboard"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Form = lazy(() => import("./pages/Form"));
 const DashboardSecretary = lazy(() =>
   import("./pages/secretary/DashboardSecretary")

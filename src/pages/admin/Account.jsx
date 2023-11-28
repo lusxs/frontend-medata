@@ -6,10 +6,22 @@ import ReactPaginate from "react-paginate";
 
 const Account = () => {
   const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(0);
+  const limit = 5;
+  const [pages, setPages] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
+  const [message, setMessage] = useState("");
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/users");
+      const response = await axios.get(
+        `http://localhost:5000/users?search_query=${keyword}&page=${page}&limit=${limit}`
+      );
+      setPage(response.data.page);
+      setPages(response.data.totalPage);
+      setRows(response.data.totalRows);
       setUsers(response.data.result);
     } catch (error) {
       console.log(error);
@@ -17,14 +29,31 @@ const Account = () => {
   };
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+    setMessage(
+      selected === 9
+        ? "Jika tidak menemukan data yang Anda cari, silahkan cari data dengan kata kunci spesifik!"
+        : ""
+    );
+  };
+
+  const searchData = (e) => {
+    e.preventDefault();
+    setPage(0);
+    setMessage("");
+    setKeyword(query);
+  };
+
   return (
     <DefaultLayout>
       {" "}
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Pengguna</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-end mb-4">
-          <form>
+          <form onSubmit={searchData}>
             <div className="flex">
               <label
                 htmlFor="search"
@@ -36,7 +65,7 @@ const Account = () => {
               <div className="relative w-full">
                 <input
                   type="search"
-                  //   onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => setQuery(e.target.value)}
                   id="search"
                   className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
                   placeholder="Cari"
@@ -108,37 +137,35 @@ const Account = () => {
           </tbody>
         </table>
 
-        {/* <div className="flex justify-center mt-4 rounded-sm">
-      <nav
-        className=""
-        key={rows}
-        role="navigation"
-        aria-label="pagination"
-      >
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          pageCount={Math.min(10, pages)}
-          onPageChange={changePage}
-          containerClassName={
-            "flex items-center h-8 -space-x-px text-sm "
-          }
-          pageLinkClassName={
-            "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-          }
-          previousLinkClassName={
-            "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-          }
-          nextLinkClassName={
-            "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-          }
-          activeLinkClassName={
-            "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-          }
-          disabledLinkClassName={"pagination-link is-disabled"}
-        />
-      </nav>
-    </div> */}
+        <div className="flex justify-center mt-4 rounded-sm">
+          <nav
+            className=""
+            key={rows}
+            role="navigation"
+            aria-label="pagination"
+          >
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={Math.min(10, pages)}
+              onPageChange={changePage}
+              containerClassName={"flex items-center h-8 -space-x-px text-sm "}
+              pageLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              }
+              previousLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              }
+              nextLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
+              }
+              activeLinkClassName={
+                "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
+              }
+              disabledLinkClassName={"pagination-link is-disabled"}
+            />
+          </nav>
+        </div>
       </div>
     </DefaultLayout>
   );

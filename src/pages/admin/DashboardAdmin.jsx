@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../../features/authSlice";
-import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import CardDashboard from "../../components/common/card/CardDashboard";
 import CardDashboardSkeleton from "../../components/common/card/CardDashboardSkeleton";
 import BarSkeleton from "../../components/common/skeleton/BarSkeleton";
 import LineChart from "../../components/common/chart/LineChart";
 import CircularProgressBar from "../../components/common/progressbar/CircularProgressBar";
+import DefaultLayout from "../../layout/DefaultLayout";
 
-const DashboardSecretary = () => {
+const DashboardAdmin = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
@@ -79,4 +79,4 @@ const DashboardSecretary = () => {
   );
 };
 
-export default DashboardSecretary;
+export default DashboardAdmin;

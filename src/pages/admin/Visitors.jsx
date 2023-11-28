@@ -3,15 +3,27 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { parseAndFormatDateString } from "../../utils/helper";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
-
+  const [page, setPage] = useState(0);
+  const limit = 5;
+  const [pages, setPages] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
+  const [message, setMessage] = useState("");
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/forms");
+      const response = await axios.get(
+        `http://localhost:5000/forms?search_query=${keyword}&page=${page}&limit=${limit}`
+      );
+      setPage(response.data.page);
+      setPages(response.data.totalPage);
+      setRows(response.data.totalRows);
       setData(response.data.result);
-      console.log(response);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -19,14 +31,30 @@ const Visitors = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, keyword]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+    setMessage(
+      selected === 9
+        ? "Jika tidak menemukan data yang Anda cari, silahkan cari data dengan kata kunci spesifik!"
+        : ""
+    );
+  };
+
+  const searchData = (e) => {
+    e.preventDefault();
+    setPage(0);
+    setMessage("");
+    setKeyword(query);
+  };
 
   return (
     <DefaultLayout>
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-end mb-4">
-          <form>
+          <form onSubmit={searchData}>
             <div className="flex">
               <label
                 htmlFor="search"
@@ -38,7 +66,7 @@ const Visitors = () => {
               <div className="relative w-full">
                 <input
                   type="search"
-                  // onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => setQuery(e.target.value)}
                   id="search"
                   className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
                   placeholder="Cari"
@@ -75,7 +103,71 @@ const Visitors = () => {
               </th>
               <th scope="col" className="px-6 py-3">
                 <div className="flex items-center">
+                  Hari/Tanggal
+                  <a href="#">
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </a>
+                </div>
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <div className="flex items-center">
                   Nama
+                  <a href="#">
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </a>
+                </div>
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <div className="flex items-center">
+                  Maksud Tujuan
+                  <a href="#">
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </a>
+                </div>
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <div className="flex items-center">
+                  Bidang
+                  <a href="#">
+                    <svg
+                      className="w-3 h-3 ml-1.5"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z" />
+                    </svg>
+                  </a>
+                </div>
+              </th>
+              <th scope="col" className="px-6 py-3">
+                <div className="flex items-center">
+                  Status
                   <a href="#">
                     <svg
                       className="w-3 h-3 ml-1.5"
@@ -103,44 +195,52 @@ const Visitors = () => {
                 >
                   {number + 1}
                 </td>
+                <td className="px-6 py-4 uppercase">
+                  {parseAndFormatDateString(item.createdAt)}
+                </td>
                 <td className="px-6 py-4 uppercase">{item.name}</td>
-                <td className="px-6 py-4 uppercase">11 November 2023</td>
+                <td className="px-6 py-4 uppercase">{item.purpose.name}</td>
+                <td className="px-6 py-4 uppercase">{item.division.name}</td>
+                <td className="px-6 py-4 uppercase">{item.status}</td>
+                <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
+                  <button className="underline">Selesai</button>
+                  <button className="underline">Tolak</button>
+                  <button className="underline">Detail</button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        {/* <div className="flex justify-center mt-4 rounded-sm">
-                <nav
-                  className=""
-                  key={rows}
-                  role="navigation"
-                  aria-label="pagination"
-                >
-                  <ReactPaginate
-                    previousLabel={"<"}
-                    nextLabel={">"}
-                    pageCount={Math.min(10, pages)}
-                    onPageChange={changePage}
-                    containerClassName={
-                      "flex items-center h-8 -space-x-px text-sm "
-                    }
-                    pageLinkClassName={
-                      "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                    }
-                    previousLinkClassName={
-                      "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                    }
-                    nextLinkClassName={
-                      "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-                    }
-                    activeLinkClassName={
-                      "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-                    }
-                    disabledLinkClassName={"pagination-link is-disabled"}
-                  />
-                </nav>
-              </div> */}
+        <div className="flex justify-center mt-4 rounded-sm">
+          <nav
+            className=""
+            key={rows}
+            role="navigation"
+            aria-label="pagination"
+          >
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={Math.min(10, pages)}
+              onPageChange={changePage}
+              containerClassName={"flex items-center h-8 -space-x-px text-sm "}
+              pageLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              }
+              previousLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              }
+              nextLinkClassName={
+                "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
+              }
+              activeLinkClassName={
+                "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
+              }
+              disabledLinkClassName={"pagination-link is-disabled"}
+            />
+          </nav>
+        </div>
       </div>
     </DefaultLayout>
   );
