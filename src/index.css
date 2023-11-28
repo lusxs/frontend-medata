@@ -35,7 +35,7 @@ select:-webkit-autofill:focus {
 }
 
 .active__navlink_sidebar {
-  @apply duration-300 border-red-600 rounded-none text-primary-600;
+  @apply font-bold duration-300 border-red-600 rounded-none text-primary-600;
 }
 
 .box__shadow__nav {

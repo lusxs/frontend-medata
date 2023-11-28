@@ -9,6 +9,8 @@ import BarSkeleton from "../../components/common/skeleton/BarSkeleton";
 import LineChart from "../../components/common/chart/LineChart";
 import CircularProgressBar from "../../components/common/progressbar/CircularProgressBar";
 import DefaultLayout from "../../layout/DefaultLayout";
+import { HiMiniUsers, HiBuildingOffice } from "react-icons/hi2";
+import { TbWorld } from "react-icons/tb";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
@@ -47,6 +49,114 @@ const DashboardAdmin = () => {
   return (
     <DefaultLayout>
       <div className="items-center px-4 py-8 m-auto">
+        <div className="grid grid-cols-1 pb-3 bg-white divide-y rounded-sm shadow-lg md:grid-cols-3 xl:divide-x xl:divide-y-0">
+          {data.length === 0 ? (
+            <>
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+            </>
+          ) : (
+            <>
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiBuildingOffice size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Bidang RESOS"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiBuildingOffice size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Bidang PFM"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiBuildingOffice size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Bidang LINJAMSOS"
+              />
+            </>
+          )}
+        </div>
+      </div>
+      <div className="items-center px-4 py-8 m-auto">
+        <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
+          {data.length === 0 ? (
+            <>
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+              <CardDashboardSkeleton />
+            </>
+          ) : (
+            <>
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiMiniUsers size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Jumlah Kunjungan Hari Ini"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiMiniUsers size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Jumlah Kunjungan Belum Selesai Proses"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiMiniUsers size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Jumlah Kunjungan Selesai Proses"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiMiniUsers size={70} />
+                    </div>
+                  </>
+                }
+                data={`11`}
+                title="Jumlah Kunjungan Batal Proses"
+              />
+            </>
+          )}
+        </div>
+      </div>
+      <h3 className="text-2xl font-bold">Maksud Tujuan</h3>
+      <div className="items-center px-4 py-8 m-auto">
         <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
           {data.length === 0 ? (
             <>
@@ -62,10 +172,12 @@ const DashboardAdmin = () => {
                   key={item.uuid}
                   child={
                     <>
-                      <CircularProgressBar percentage={50} />
+                      <div className="text-red-600">
+                        <TbWorld size={70} />
+                      </div>
                     </>
                   }
-                  data={`7/14`}
+                  data={`11`}
                   title={item.name}
                 />
               ))}
@@ -73,8 +185,6 @@ const DashboardAdmin = () => {
           )}
         </div>
       </div>
-
-      <BarSkeleton count={10} />
     </DefaultLayout>
   );
 };

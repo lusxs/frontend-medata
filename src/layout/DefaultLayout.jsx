@@ -14,8 +14,24 @@ import PropTypes from "prop-types";
 
 const DefaultLayout = ({ children }) => {
   const { isError, user } = useSelector((state) => state.auth);
+  console.log(user);
   const isAdmin = user && user.role === "admin";
   const isSecretary = user && user.role === "secretary";
+  let role;
+
+  switch (user?.role) {
+    case "admin":
+      role = "Admin";
+      break;
+    case "secretary":
+      role = "Sekretaris";
+      break;
+    default:
+      role = user
+        ? `Kepala Bidang ${user.division || "Unknown Division"}`
+        : "Unknown Role";
+      break;
+  }
 
   const [isModalLogout, setIsModalLogout] = useState(false);
   const dispatch = useDispatch();
@@ -78,7 +94,7 @@ const DefaultLayout = ({ children }) => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(reset());
-    navigate("/");
+    navigate("/login");
   };
 
   const openModal = () => {
@@ -96,12 +112,17 @@ const DefaultLayout = ({ children }) => {
           open ? "w-72" : "w-16"
         } duration-500 text-gray-500 box__shadow z-index-top px-4`}
       >
-        <div className="flex justify-end py-3">
-          <HiMenuAlt3
-            size={26}
-            className="cursor-pointer"
-            onClick={() => setOpen(!open)}
-          />
+        <div className="flex items-center justify-between">
+          <div className={`${open ? "" : "hidden"} `}>
+            <h1 className="text-2xl font-bold text-red-600">MEDATA</h1>
+          </div>
+          <div className="flex justify-end py-3">
+            <HiMenuAlt3
+              size={26}
+              className="cursor-pointer"
+              onClick={() => setOpen(!open)}
+            />
+          </div>
         </div>
         <div className="relative flex flex-col gap-4 mt-4">
           {menus?.map((menu, i) => (
@@ -161,7 +182,10 @@ const DefaultLayout = ({ children }) => {
         </div>
       </div>
       <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-        <header className="sticky top-0 flex w-full p-4 py-8 bg-white z-index drop-shadow-1 box__shadow"></header>
+        <header className="sticky top-0 flex flex-col items-end w-full py-4 bg-white px-14 z-index drop-shadow-1 box__shadow">
+          <h3>{user && user.name}</h3>
+          <p>{user && role}</p>
+        </header>
         <main className="h-screen p-4 md:p-6 2xl:p-10">{children}</main>
         {/* <footer className="sticky bottom-0 flex w-full p-4 bg-white z-index drop-shadow-1 box__shadow">
           Copyright © 2023 - All right reserved by Dinas Sosial Kabupaten

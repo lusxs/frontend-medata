@@ -223,7 +223,9 @@ const Visitors = () => {
                 <td className="px-6 py-4 uppercase">{item.name}</td>
                 <td className="px-6 py-4 uppercase">{item.purpose.name}</td>
                 <td className="px-6 py-4 uppercase">{item.division.name}</td>
-                <td className="px-6 py-4 uppercase">{item.status}</td>
+                <td className="px-6 py-4 uppercase">
+                  {item.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
+                </td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
                   <button
                     className="underline"

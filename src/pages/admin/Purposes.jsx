@@ -4,10 +4,14 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import ReactPaginate from "react-paginate";
 import ModalUpdatePurpose from "../../components/common/modal/ModalUpdatePurpose";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Toggle from "../../components/common/toggle/Toggle";
+import ModalAddPurpose from "../../components/common/modal/ModalAddPurpose";
 
 const Purposes = () => {
   const [data, setData] = useState([]);
   const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [page, setPage] = useState(0);
   const limit = 5;
   const [pages, setPages] = useState(0);
@@ -55,11 +59,12 @@ const Purposes = () => {
       {isOpenModalUpdate && (
         <ModalUpdatePurpose setIsOpenModalUpdate={setIsOpenModalUpdate} />
       )}
+      {isOpenModal && <ModalAddPurpose setIsOpenModal={setIsOpenModal} />}
       <h5 className="mt-6 mb-4 text-xl font-semibold">
         Data Kelola Maksud Tujuan
       </h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
-        <div className="flex items-center justify-end mb-4">
+        <div className="flex items-center justify-between mb-4">
           <form onSubmit={searchData}>
             <div className="flex">
               <label
@@ -100,6 +105,14 @@ const Purposes = () => {
               </div>
             </div>
           </form>
+          <div>
+            <button
+              onClick={() => setIsOpenModal(true)}
+              className="btn-primary"
+            >
+              Tambah Maksud Tujuan
+            </button>
+          </div>
         </div>
         <table className="w-full text-sm text-left text-gray-500 shadow-sm">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -142,9 +155,12 @@ const Purposes = () => {
                 </td>
                 <td className="px-6 py-4 uppercase">{item.name}</td>
                 <td className="px-6 py-4 uppercase">{item.division.name}</td>
-                <td className="px-6 py-4 uppercase">
+                <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
+                  <div>
+                    <Toggle />
+                  </div>
                   <button
-                    className="btn-primary"
+                    className="btn-secondary"
                     onClick={() => setIsOpenModalUpdate(true)}
                   >
                     Edit
