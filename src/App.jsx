@@ -7,7 +7,9 @@ import Statistics from "./pages/admin/Statistics";
 import Account from "./pages/admin/Account";
 import Purposes from "./pages/admin/Purposes";
 import Report from "./pages/admin/Report";
-import Visitors from "./pages/admin/Visitors";
+import Visitors from "./pages/visitor/Visitors";
+import VisitorsCompleted from "./pages/visitor/VisitorsCompleted";
+import VisitorsCanceled from "./pages/visitor/VisitorsCanceled";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Form = lazy(() => import("./pages/Form"));
@@ -71,6 +73,22 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Visitors />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/visitors/canceled"
+            element={
+              <Suspense fallback={<Loading />}>
+                <VisitorsCanceled />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/visitors/completed"
+            element={
+              <Suspense fallback={<Loading />}>
+                <VisitorsCompleted />
               </Suspense>
             }
           />

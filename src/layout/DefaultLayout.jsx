@@ -50,6 +50,16 @@ const DefaultLayout = ({ children }) => {
       link: "/visitors",
       icon: TbReportAnalytics,
     },
+    {
+      name: "Data Pengunjung Batal Proses",
+      link: "/visitors/canceled",
+      icon: TbReportAnalytics,
+    },
+    {
+      name: "Data Pengunjung Selesai Proses",
+      link: "/visitors/completed",
+      icon: TbReportAnalytics,
+    },
     ...(user && user.role !== "secretary"
       ? [
           {

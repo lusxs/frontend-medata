@@ -4,6 +4,8 @@ import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { parseAndFormatDateString } from "../../utils/helper";
+import ModalUpdateStatus from "../../components/common/modal/ModalUpdateStatus";
+import { STATUS } from "../../utils/constanta";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
@@ -14,10 +16,14 @@ const Visitors = () => {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [isCancel, setIsCancel] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [id, setId] = useState("");
+  const status = "NOT COMPLETED";
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/forms?search_query=${keyword}&page=${page}&limit=${limit}`
+        `http://localhost:5000/forms?search_query=${keyword}&page=${page}&limit=${limit}&status=${status}`
       );
       setPage(response.data.page);
       setPages(response.data.totalPage);
@@ -51,6 +57,22 @@ const Visitors = () => {
 
   return (
     <DefaultLayout>
+      {isCancel && (
+        <ModalUpdateStatus
+          onClose={setIsCancel}
+          id={id}
+          fetchData={fetchData}
+          status={STATUS.CANCELED}
+        />
+      )}
+      {isCompleted && (
+        <ModalUpdateStatus
+          onClose={setIsCompleted}
+          id={id}
+          fetchData={fetchData}
+          status={STATUS.COMPLETED}
+        />
+      )}
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-end mb-4">
@@ -203,8 +225,24 @@ const Visitors = () => {
                 <td className="px-6 py-4 uppercase">{item.division.name}</td>
                 <td className="px-6 py-4 uppercase">{item.status}</td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
-                  <button className="underline">Selesai</button>
-                  <button className="underline">Tolak</button>
+                  <button
+                    className="underline"
+                    onClick={() => {
+                      setId(item.id);
+                      setIsCompleted(true);
+                    }}
+                  >
+                    Selesai
+                  </button>
+                  <button
+                    className="underline"
+                    onClick={() => {
+                      setId(item.id);
+                      setIsCancel(true);
+                    }}
+                  >
+                    Batal
+                  </button>
                   <button className="underline">Detail</button>
                 </td>
               </tr>
