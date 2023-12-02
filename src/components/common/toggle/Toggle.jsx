@@ -1,10 +1,13 @@
 import { useState } from "react";
 
-const Toggle = () => {
-  const [isChecked, setIsChecked] = useState(true);
+const Toggle = ({ checked, onToggle }) => {
+  const [isChecked, setIsChecked] = useState(checked);
 
   const handleToggleChange = () => {
     setIsChecked(!isChecked);
+    if (onToggle) {
+      onToggle(); // Call the provided onToggle callback
+    }
   };
 
   return (

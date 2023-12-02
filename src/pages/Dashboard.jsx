@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import DefaultLayout from "../layout/DefaultLayout";
 import DashboardAdmin from "./admin/DashboardAdmin";
 import DashboardDivision from "./division/DashboardDivision";
 import DashboardSecretary from "./secretary/DashboardSecretary";
@@ -25,7 +24,7 @@ const Dashboard = () => {
   const renderDashboard = () => {
     if (!user) return null;
 
-    switch (user.role) {
+    switch (user?.role) {
       case "admin":
         return <DashboardAdmin />;
       case "division":
