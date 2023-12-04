@@ -6,7 +6,7 @@ const Toggle = ({ checked, onToggle }) => {
   const handleToggleChange = () => {
     setIsChecked(!isChecked);
     if (onToggle) {
-      onToggle(); // Call the provided onToggle callback
+      onToggle();
     }
   };
 

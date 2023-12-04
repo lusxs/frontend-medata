@@ -25,9 +25,9 @@ ChartJS.register(
   SubTitle
 );
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, label, title }) => {
   const chartData = {
-    labels: ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"],
+    labels: label,
     datasets: [
       {
         label: "Contoh Data",
@@ -41,6 +41,19 @@ const LineChart = ({ data }) => {
 
   return (
     <div className="p-4 box__shadow">
+      <h4 className="text-lg font-semibold">{title}</h4>
+      {title === "Tahun" ? (
+        <>
+          <select
+            name=""
+            id=""
+            className="w-full max-w-sm px-4 py-2 mt-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            <option value="">2022</option>
+            <option value="">2023</option>
+          </select>
+        </>
+      ) : null}
       <Line data={chartData} />
     </div>
   );
