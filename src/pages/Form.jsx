@@ -9,7 +9,8 @@ import Loading from "../components/common/loading/Loading";
 const Form = () => {
   const [data, setData] = useState({
     name: "",
-    email: "",
+    age: "",
+    citizenNumber: "",
     phoneNumber: "",
     profession: "",
     address: "",
@@ -22,7 +23,8 @@ const Form = () => {
 
   const [errors, setErrors] = useState({
     name: "",
-    email: "",
+    age: "",
+    citizenNumber: "",
     phoneNumber: "",
     profession: "",
     address: "",
@@ -44,16 +46,25 @@ const Form = () => {
       error: errors.name,
     },
     {
-      id: 2,
-      name: "email",
-      type: "email",
-      placeholder: "Email",
-      label: "Email",
+      id: 3,
+      name: "age",
+      type: "text",
+      placeholder: "21",
+      label: "Umur",
       required: true,
-      error: errors.email,
+      error: errors.age,
     },
     {
-      id: 3,
+      id: 4,
+      name: "citizenNumber",
+      type: "text",
+      placeholder: "7171717171",
+      label: "NIK",
+      required: false,
+      error: errors.citizenNumber,
+    },
+    {
+      id: 5,
       name: "phoneNumber",
       type: "text",
       placeholder: "Nomor Kontak",
@@ -62,7 +73,7 @@ const Form = () => {
       error: errors.phoneNumber,
     },
     {
-      id: 4,
+      id: 6,
       name: "profession",
       type: "text",
       placeholder: "Pekerjaan",
@@ -71,7 +82,7 @@ const Form = () => {
       error: errors.profession,
     },
     {
-      id: 5,
+      id: 7,
       name: "address",
       type: "text",
       placeholder: "Alamat",
@@ -80,7 +91,7 @@ const Form = () => {
       error: errors.address,
     },
     {
-      id: 6,
+      id: 8,
       name: "division",
       type: "select",
       placeholder: "Tujuan",
@@ -94,7 +105,8 @@ const Form = () => {
     const newErrors = {};
 
     inputs.forEach((input) => {
-      if (input.required && data[input.name].trim() === "") {
+      const inputValue = data[input.name] || ""; // Ensure inputValue is not undefined
+      if (input.required && inputValue.trim() === "") {
         newErrors[input.name] = `Field ${input.label} tidak boleh kosong.`;
       } else {
         newErrors[input.name] = "";

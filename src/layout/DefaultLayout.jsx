@@ -19,7 +19,6 @@ import PropTypes from "prop-types";
 
 const DefaultLayout = ({ children }) => {
   const { isError, user } = useSelector((state) => state.auth);
-  console.log(user);
   const isAdmin = user && user.role === "admin";
   const isSecretary = user && user.role === "secretary";
   let role;
@@ -70,16 +69,28 @@ const DefaultLayout = ({ children }) => {
       name: "Data Pengunjung",
       link: "/visitors",
       icon: BsDatabase,
-    },
-    {
-      name: "Data Pengunjung Batal Proses",
-      link: "/visitors/canceled",
-      icon: BsDatabaseDash,
-    },
-    {
-      name: "Data Pengunjung Selesai Proses",
-      link: "/visitors/completed",
-      icon: BsDatabaseCheck,
+      submenus: [
+        {
+          name: "Semua ",
+          link: "/visitors/all",
+          icon: BsDatabase,
+        },
+        {
+          name: "Belum Proses",
+          link: "/visitors/not-completed",
+          icon: BsDatabase,
+        },
+        {
+          name: "Batal Proses",
+          link: "/visitors/canceled",
+          icon: BsDatabaseDash,
+        },
+        {
+          name: "Selesai Proses",
+          link: "/visitors/completed",
+          icon: BsDatabaseCheck,
+        },
+      ],
     },
     ...(user && user.role !== "secretary"
       ? [
@@ -131,34 +142,69 @@ const DefaultLayout = ({ children }) => {
         </div>
         <div className="relative flex flex-col gap-4 mt-4">
           {menus?.map((menu, i) => (
-            <NavLink
-              to={menu?.link}
-              key={i}
-              className={` ${menu?.margin && "mt-5"} ${
-                location.pathname === `${menu.link}`
-                  ? `active__navlink_sidebar ${open && "border-r-4"} `
-                  : ""
-              }  group flex items-center text-sm  gap-3.5 font-medium p-2 hover:border-r-4 `}
-            >
-              <div>{React.createElement(menu?.icon, { size: "20" })}</div>
-              <h2
-                style={{
-                  transitionDelay: `${i + 3}00ms`,
-                }}
-                className={`whitespace-pre duration-500 ${
-                  !open && "opacity-0 translate-x-28 overflow-hidden"
-                }`}
-              >
-                {menu?.name}
-              </h2>
-              <h2
-                className={`${
-                  open && "hidden"
-                } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
-              >
-                {menu?.name}
-              </h2>
-            </NavLink>
+            <div key={i}>
+              {menu.submenus ? (
+                // Render parent menu with submenus
+                <div className="group">
+                  <div
+                    className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 ${
+                      location.pathname.startsWith(menu.link)
+                        ? "active__navlink_sidebar"
+                        : ""
+                    }`}
+                  >
+                    <div>{React.createElement(menu.icon, { size: "20" })}</div>
+                    <h2>{menu.name}</h2>
+                  </div>
+                  <div className="ml-6">
+                    {menu.submenus.map((submenu, j) => (
+                      <NavLink
+                        to={submenu.link}
+                        key={j}
+                        className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 ${
+                          location.pathname === submenu.link
+                            ? "active__navlink_sidebar sub-menu"
+                            : "sub-menu"
+                        }`}
+                      >
+                        <div>
+                          {React.createElement(submenu.icon, { size: "20" })}
+                        </div>
+                        <h2>{submenu.name}</h2>
+                      </NavLink>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <NavLink
+                  to={menu.link}
+                  className={` ${menu?.margin && "mt-5"} ${
+                    location.pathname === `${menu.link}`
+                      ? `active__navlink_sidebar ${open && "border-r-4"} `
+                      : ""
+                  }  group flex items-center text-sm  gap-3.5 font-medium p-2 hover:border-r-4 `}
+                >
+                  <div>{React.createElement(menu?.icon, { size: "20" })}</div>
+                  <h2
+                    style={{
+                      transitionDelay: `${i + 3}00ms`,
+                    }}
+                    className={`whitespace-pre duration-500 ${
+                      !open && "opacity-0 translate-x-28 overflow-hidden"
+                    }`}
+                  >
+                    {menu?.name}
+                  </h2>
+                  <h2
+                    className={`${
+                      open && "hidden"
+                    } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
+                  >
+                    {menu?.name}
+                  </h2>
+                </NavLink>
+              )}
+            </div>
           ))}
           <button
             onClick={() => openModal()}

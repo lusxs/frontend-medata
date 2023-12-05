@@ -5,7 +5,6 @@ import { loginUser, reset } from "../features/authSlice";
 import LogoMinahasa from "../assets/logo-minahasa.png";
 import LogoDinsos from "../assets/logo-dinsos.png";
 import ToastError from "../components/common/toast/ToastError";
-import ModalError from "../components/common/modal/ModalError";
 import Loading from "../components/common/loading/Loading";
 
 const Login = () => {
@@ -19,8 +18,8 @@ const Login = () => {
   );
 
   useEffect(() => {
-    if ((user || isSuccess) && user.isActive === true) {
-      if (user.role === "admin") {
+    if (user || isSuccess) {
+      if (user.role === "admin" && user.isActive === true) {
         navigate("/dashboard");
       } else if (user.role === "secretary") {
         navigate("/secretary/dashboard");

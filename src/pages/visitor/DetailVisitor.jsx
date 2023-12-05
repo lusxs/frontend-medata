@@ -58,10 +58,25 @@ const DetailVisitor = () => {
             htmlFor=""
             className="block mb-2 text-sm font-semibold text-gray-600"
           >
-            Email
+            Umur
           </label>
           <input
-            placeholder={detailVisitor?.email}
+            placeholder={detailVisitor?.age}
+            type="text"
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
+            disabled
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor=""
+            className="block mb-2 text-sm font-semibold text-gray-600"
+          >
+            NIK
+          </label>
+          <input
+            placeholder={detailVisitor?.citizenNumber}
             type="text"
             className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
             disabled

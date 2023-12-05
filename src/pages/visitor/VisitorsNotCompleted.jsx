@@ -1,11 +1,17 @@
 import { useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { MdOutlineDownloadDone } from "react-icons/md";
+import { MdOutlineCancel } from "react-icons/md";
+import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
+import ModalUpdateStatus from "../../components/common/modal/ModalUpdateStatus";
+import { STATUS } from "../../utils/constanta";
 
-const Visitors = () => {
+const VisitorsNotCompleted = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const limit = 5;
@@ -14,8 +20,10 @@ const Visitors = () => {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [isCancel, setIsCancel] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const [id, setId] = useState("");
-  const status = "";
+  const status = "NOT COMPLETED";
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -25,7 +33,6 @@ const Visitors = () => {
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
       setData(response.data.result);
-      console.log(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +60,22 @@ const Visitors = () => {
 
   return (
     <DefaultLayout>
+      {isCancel && (
+        <ModalUpdateStatus
+          onClose={setIsCancel}
+          id={id}
+          fetchData={fetchData}
+          status={STATUS.CANCELED}
+        />
+      )}
+      {isCompleted && (
+        <ModalUpdateStatus
+          onClose={setIsCompleted}
+          id={id}
+          fetchData={fetchData}
+          status={STATUS.COMPLETED}
+        />
+      )}
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
@@ -189,6 +212,9 @@ const Visitors = () => {
                       </a>
                     </div>
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">Aksi</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -214,8 +240,35 @@ const Visitors = () => {
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
                       {item.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
-                      {item.status === "COMPLETED" ? "Selesai" : ""}
-                      {item.status === "CANCELED" ? "Batal Proses" : ""}
+                    </td>
+                    <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
+                      <button
+                        className="btn-secondary"
+                        onClick={() => {
+                          setId(item.id);
+                          setIsCompleted(true);
+                        }}
+                        title="Selesai Proses"
+                      >
+                        <MdOutlineDownloadDone className="large-icon" />
+                      </button>
+                      <button
+                        className="btn-secondary"
+                        onClick={() => {
+                          setId(item.id);
+                          setIsCancel(true);
+                        }}
+                        title="Batal Proses"
+                      >
+                        <MdOutlineCancel className="large-icon" />
+                      </button>
+                      <Link
+                        to={`/visitor/detail/${item.id}`}
+                        className="underline uppercase btn-secondary"
+                        title="Detail"
+                      >
+                        <BiSolidUserDetail className="large-icon" />
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -266,4 +319,4 @@ const Visitors = () => {
   );
 };
 
-export default Visitors;
+export default VisitorsNotCompleted;

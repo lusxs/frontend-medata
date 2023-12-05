@@ -12,6 +12,7 @@ import Visitors from "./pages/visitor/Visitors";
 import VisitorsCompleted from "./pages/visitor/VisitorsCompleted";
 import VisitorsCanceled from "./pages/visitor/VisitorsCanceled";
 import DetailVisitor from "./pages/visitor/DetailVisitor";
+import VisitorsNotCompleted from "./pages/visitor/VisitorsNotCompleted";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Form = lazy(() => import("./pages/Form"));
@@ -79,10 +80,18 @@ function App() {
             }
           />
           <Route
-            path="/visitors"
+            path="/visitors/all"
             element={
               <Suspense fallback={<Loading />}>
                 <Visitors />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/visitors/not-completed"
+            element={
+              <Suspense fallback={<Loading />}>
+                <VisitorsNotCompleted />
               </Suspense>
             }
           />

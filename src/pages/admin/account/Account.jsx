@@ -204,10 +204,10 @@ const Account = () => {
                 >
                   {number + 1}
                 </td>
-                <td className="text-center px-6 py-4 ">{item.username}</td>
-                <td className="text-center px-6 py-4 uppercase">{item.name}</td>
-                <td className="text-center px-6 py-4 uppercase">{item?.nip}</td>
-                <td className="text-center px-6 py-4 uppercase">
+                <td className="px-6 py-4 text-center ">{item.username}</td>
+                <td className="px-6 py-4 text-center uppercase">{item.name}</td>
+                <td className="px-6 py-4 text-center uppercase">{item?.nip}</td>
+                <td className="px-6 py-4 text-center uppercase">
                   {item.role === "admin" ? `Admin ` : ""}
                   {item.role === "secretary" ? "Sekretaris" : ""}
                   {item.role === "division"
