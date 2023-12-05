@@ -234,8 +234,8 @@ const DefaultLayout = ({ children }) => {
       </div>
       <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
         <header className="sticky top-0 flex flex-col items-end w-full py-4 bg-white px-14 z-index drop-shadow-1 box__shadow">
-          <h3>{user && user.name}</h3>
-          <p>{user && role}</p>
+          <h3 className="font-bold">{user && user.name}</h3>
+          <p className="font-light">{user && role}</p>
         </header>
         <main className="h-screen p-4 md:p-6 2xl:p-10">{children}</main>
         {/* <footer className="sticky bottom-0 flex w-full p-4 bg-white z-index drop-shadow-1 box__shadow">
