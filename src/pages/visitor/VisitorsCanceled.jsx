@@ -54,7 +54,7 @@ const VisitorsCanceled = () => {
 
   return (
     <DefaultLayout>
-      <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
+      <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan Batal</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
           <>
@@ -221,7 +221,7 @@ const VisitorsCanceled = () => {
                         className="btn-secondary"
                         title="Detail"
                       >
-                        <BiSolidUserDetail className="icon-large" />
+                        <BiSolidUserDetail className="large-icon" />
                       </Link>
                     </td>
                   </tr>

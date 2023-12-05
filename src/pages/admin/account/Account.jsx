@@ -1,10 +1,9 @@
 import { useState } from "react";
-import DefaultLayout from "../../layout/DefaultLayout";
+import DefaultLayout from "../../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
-import Toggle from "../../components/common/toggle/Toggle";
-import { MdEditNote } from "react-icons/md";
+import Toggle from "../../../components/common/toggle/Toggle";
 import { Link } from "react-router-dom";
 
 const Account = () => {
@@ -28,6 +27,26 @@ const Account = () => {
       setUsers(response.data.result);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleToggleChange = async (userId) => {
+    try {
+      const updatedUsers = users.map((user) =>
+        user.uuid === userId ? { ...user, isActive: !user.isActive } : user
+      );
+
+      setUsers(updatedUsers);
+
+      const response = await axios.patch(
+        `http://localhost:5000/user/active/${userId}`,
+        {
+          isActive: updatedUsers.find((user) => user.uuid === userId)?.isActive,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating isActive:", error);
     }
   };
   useEffect(() => {
@@ -187,7 +206,7 @@ const Account = () => {
                 </td>
                 <td className="text-center px-6 py-4 ">{item.username}</td>
                 <td className="text-center px-6 py-4 uppercase">{item.name}</td>
-                <td className="text-center px-6 py-4 uppercase">12345678</td>
+                <td className="text-center px-6 py-4 uppercase">{item?.nip}</td>
                 <td className="text-center px-6 py-4 uppercase">
                   {item.role === "admin" ? `Admin ` : ""}
                   {item.role === "secretary" ? "Sekretaris" : ""}
@@ -197,14 +216,17 @@ const Account = () => {
                 </td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
                   <div className="text-center">
-                    <Toggle />
+                    <Toggle
+                      checked={item.isActive}
+                      onToggle={() => handleToggleChange(item.uuid)}
+                    />
                   </div>
-                  <Link
-                    to={`/user/edit/${item.uuid}`}
+                  {/* <Link
+                    to={`/user/detail/${item.uuid}`}
                     className="btn-secondary"
                   >
-                    <MdEditNote className="large-icon" />
-                  </Link>
+                    Detail
+                  </Link> */}
                 </td>
               </tr>
             ))}

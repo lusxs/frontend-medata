@@ -20,6 +20,7 @@ const Statistics = () => {
     fetchDivisions();
   }, []);
   const chartData = [1, 2, 3, 5];
+  const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
   return (
     <DefaultLayout>
       <form className="my-4">
@@ -43,10 +44,10 @@ const Statistics = () => {
         </div>
       </form>
       <div className="grid grid-cols-2 gap-4">
-        <LineChart data={chartData} />
-        <LineChart data={chartData} />
-        <LineChart data={chartData} />
-        <LineChart data={chartData} />
+        <LineChart data={chartData} label={label} title="7 Hari Terakhir" />
+        <LineChart data={chartData} label={label} title="Desember" />
+        <LineChart data={chartData} label={label} title="6 Bulan Terakhir" />
+        <LineChart data={chartData} label={label} title="Tahun" />
       </div>
     </DefaultLayout>
   );

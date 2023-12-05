@@ -19,7 +19,7 @@ const Login = () => {
   );
 
   useEffect(() => {
-    if (user || isSuccess) {
+    if ((user || isSuccess) && user.isActive === true) {
       if (user.role === "admin") {
         navigate("/dashboard");
       } else if (user.role === "secretary") {

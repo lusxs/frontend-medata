@@ -4,7 +4,8 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Loading from "./components/common/loading/Loading";
 import Statistics from "./pages/admin/Statistics";
-import Account from "./pages/admin/Account";
+import Account from "./pages/admin/account/Account";
+import DetailAccount from "./pages/admin/account/DetailAccount";
 import Purposes from "./pages/admin/Purposes";
 import Report from "./pages/admin/Report";
 import Visitors from "./pages/visitor/Visitors";
@@ -58,6 +59,14 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Account />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/user/detail/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <DetailAccount />
               </Suspense>
             }
           />
