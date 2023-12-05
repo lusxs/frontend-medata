@@ -61,8 +61,7 @@ const Login = () => {
         <div
           className="relative flex items-center justify-center min-h-screen px-4 py-12 bg-gray-500 bg-no-repeat bg-cover sm:px-6 lg:px-8"
           style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1525302220185-c387a117886e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)",
+            backgroundImage: "url(public/background-dinsos.jpg)",
           }}
         >
           <div className="absolute inset-0 z-0 bg-black opacity-60" />
@@ -80,7 +79,7 @@ const Login = () => {
                 </label>
                 <input
                   className="w-full py-2 text-base border-b border-gray-300 focus:outline-none focus:border-red-500"
-                  placeholder="uciii"
+                  placeholder="Masukan nama pengguna"
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>

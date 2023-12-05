@@ -7,6 +7,11 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { TbReportAnalytics } from "react-icons/tb";
 import { AiOutlineUser } from "react-icons/ai";
+import { LuLineChart } from "react-icons/lu";
+import { RiFileSettingsLine } from "react-icons/ri";
+import { BsDatabase } from "react-icons/bs";
+import { BsDatabaseCheck } from "react-icons/bs";
+import { BsDatabaseDash } from "react-icons/bs";
 import { MdLogout } from "react-icons/md";
 import { NavLink, useLocation } from "react-router-dom";
 import ModalLogout from "../components/common/modal/ModalLogout";
@@ -49,7 +54,7 @@ const DefaultLayout = ({ children }) => {
   const menus = [
     { name: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
     ...(isAdmin || isSecretary
-      ? [{ name: "Statistik", link: "/statistics", icon: MdOutlineDashboard }]
+      ? [{ name: "Statistik", link: "/statistics", icon: LuLineChart }]
       : []),
     ...(isAdmin
       ? [
@@ -57,24 +62,24 @@ const DefaultLayout = ({ children }) => {
           {
             name: "Kelola Maksud Tujuan",
             link: "/purposes",
-            icon: TbReportAnalytics,
+            icon: RiFileSettingsLine,
           },
         ]
       : []),
     {
       name: "Data Pengunjung",
       link: "/visitors",
-      icon: TbReportAnalytics,
+      icon: BsDatabase,
     },
     {
       name: "Data Pengunjung Batal Proses",
       link: "/visitors/canceled",
-      icon: TbReportAnalytics,
+      icon: BsDatabaseDash,
     },
     {
       name: "Data Pengunjung Selesai Proses",
       link: "/visitors/completed",
-      icon: TbReportAnalytics,
+      icon: BsDatabaseCheck,
     },
     ...(user && user.role !== "secretary"
       ? [

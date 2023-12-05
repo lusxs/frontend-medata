@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import Toggle from "../../components/common/toggle/Toggle";
+import { MdEditNote } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const Account = () => {
@@ -106,7 +107,7 @@ const Account = () => {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   Nama Pengguna
                   <a href="#">
                     <svg
@@ -122,7 +123,7 @@ const Account = () => {
                 </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   Nama
                   <a href="#">
                     <svg
@@ -138,7 +139,7 @@ const Account = () => {
                 </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   NIP
                   <a href="#">
                     <svg
@@ -155,7 +156,7 @@ const Account = () => {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center">
+                <div className="flex items-center justify-center">
                   Jabatan
                   <a href="#">
                     <svg
@@ -171,7 +172,7 @@ const Account = () => {
                 </div>
               </th>
               <th scope="col" className="px-6 py-3">
-                <div className="flex items-center">Aksi</div>
+                <div className="flex items-center justify-center">Aksi</div>
               </th>
             </tr>
           </thead>
@@ -184,10 +185,10 @@ const Account = () => {
                 >
                   {number + 1}
                 </td>
-                <td className="px-6 py-4 ">{item.username}</td>
-                <td className="px-6 py-4 uppercase">{item.name}</td>
-                <td className="px-6 py-4 uppercase">12345678</td>
-                <td className="px-6 py-4 uppercase">
+                <td className="text-center px-6 py-4 ">{item.username}</td>
+                <td className="text-center px-6 py-4 uppercase">{item.name}</td>
+                <td className="text-center px-6 py-4 uppercase">12345678</td>
+                <td className="text-center px-6 py-4 uppercase">
                   {item.role === "admin" ? `Admin ` : ""}
                   {item.role === "secretary" ? "Sekretaris" : ""}
                   {item.role === "division"
@@ -195,14 +196,14 @@ const Account = () => {
                     : ""}
                 </td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
-                  <div>
+                  <div className="text-center">
                     <Toggle />
                   </div>
                   <Link
                     to={`/user/edit/${item.uuid}`}
                     className="btn-secondary"
                   >
-                    Edit
+                    <MdEditNote className="large-icon" />
                   </Link>
                 </td>
               </tr>

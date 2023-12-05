@@ -3,6 +3,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
 import { Link } from "react-router-dom";
 
@@ -106,7 +107,7 @@ const VisitorsCompleted = () => {
                     No
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Hari/Tanggal
                       <a href="#">
                         <svg
@@ -122,7 +123,7 @@ const VisitorsCompleted = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Nama
                       <a href="#">
                         <svg
@@ -138,7 +139,7 @@ const VisitorsCompleted = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Maksud Tujuan
                       <a href="#">
                         <svg
@@ -154,7 +155,7 @@ const VisitorsCompleted = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Bidang
                       <a href="#">
                         <svg
@@ -170,7 +171,7 @@ const VisitorsCompleted = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Status
                       <a href="#">
                         <svg
@@ -186,7 +187,7 @@ const VisitorsCompleted = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Aksi</div>
+                    <div className="flex items-center justify-center">Aksi</div>
                   </th>
                 </tr>
               </thead>
@@ -199,12 +200,16 @@ const VisitorsCompleted = () => {
                     >
                       {number + 1}
                     </td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
                       {parseAndFormatDateString(item.createdAt)}
                     </td>
-                    <td className="px-6 py-4 uppercase">{item.name}</td>
-                    <td className="px-6 py-4 uppercase">{item.purpose.name}</td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
+                      {item.name}
+                    </td>
+                    <td className="text-center px-6 py-4 uppercase">
+                      {item.purpose.name}
+                    </td>
+                    <td className="text-center px-6 py-4 uppercase">
                       {item.division.name}
                     </td>
                     <td className="px-6 py-4 uppercase">
@@ -213,9 +218,10 @@ const VisitorsCompleted = () => {
                     <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
                       <Link
                         to={`/visitor/detail/${item.id}`}
-                        className="underline"
+                        className="btn-secondary"
+                        title="detail"
                       >
-                        Detail
+                        <BiSolidUserDetail className="icon-large" />
                       </Link>
                     </td>
                   </tr>

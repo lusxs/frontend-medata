@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { MdOutlineDownloadDone } from "react-icons/md";
+import { MdOutlineCancel } from "react-icons/md";
+import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
 import ModalUpdateStatus from "../../components/common/modal/ModalUpdateStatus";
 import { STATUS } from "../../utils/constanta";
@@ -130,7 +133,7 @@ const Visitors = () => {
                     No
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Hari/Tanggal
                       <a href="#">
                         <svg
@@ -146,7 +149,7 @@ const Visitors = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Nama
                       <a href="#">
                         <svg
@@ -162,7 +165,7 @@ const Visitors = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Maksud Tujuan
                       <a href="#">
                         <svg
@@ -178,7 +181,7 @@ const Visitors = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Bidang
                       <a href="#">
                         <svg
@@ -194,7 +197,7 @@ const Visitors = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Status
                       <a href="#">
                         <svg
@@ -210,7 +213,7 @@ const Visitors = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Aksi</div>
+                    <div className="flex items-center justify-center">Aksi</div>
                   </th>
                 </tr>
               </thead>
@@ -223,41 +226,48 @@ const Visitors = () => {
                     >
                       {number + 1}
                     </td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
                       {parseAndFormatDateString(item.createdAt)}
                     </td>
-                    <td className="px-6 py-4 uppercase">{item.name}</td>
-                    <td className="px-6 py-4 uppercase">{item.purpose.name}</td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
+                      {item.name}
+                    </td>
+                    <td className="text-center px-6 py-4 uppercase">
+                      {item.purpose.name}
+                    </td>
+                    <td className="text-center px-6 py-4 uppercase">
                       {item.division.name}
                     </td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
                       {item.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
                     </td>
                     <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
                       <button
-                        className="underline uppercase"
+                        className="btn-secondary"
                         onClick={() => {
                           setId(item.id);
                           setIsCompleted(true);
                         }}
+                        title="Selesai Proses"
                       >
-                        SELESAI
+                        <MdOutlineDownloadDone className="large-icon" />
                       </button>
                       <button
-                        className="underline uppercase"
+                        className="btn-secondary"
                         onClick={() => {
                           setId(item.id);
                           setIsCancel(true);
                         }}
+                        title="Batal Proses"
                       >
-                        BATAL
+                        <MdOutlineCancel className="large-icon" />
                       </button>
                       <Link
                         to={`/visitor/detail/${item.id}`}
-                        className="underline uppercase"
+                        className="underline uppercase btn-secondary"
+                        title="Detail"
                       >
-                        Detail
+                        <BiSolidUserDetail className="large-icon" />
                       </Link>
                     </td>
                   </tr>

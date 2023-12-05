@@ -6,6 +6,7 @@ import ModalUpdatePurpose from "../../components/common/modal/ModalUpdatePurpose
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Toggle from "../../components/common/toggle/Toggle";
+import { MdEditNote } from "react-icons/md";
 import ModalAddPurpose from "../../components/common/modal/ModalAddPurpose";
 
 const Purposes = () => {
@@ -157,7 +158,7 @@ const Purposes = () => {
                     No
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       Maksud Tujuan
                       <a href="#">
                         <svg
@@ -173,10 +174,12 @@ const Purposes = () => {
                     </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Bidang</div>
+                    <div className="flex items-center justify-center">
+                      Bidang
+                    </div>
                   </th>
                   <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center">Aksi</div>
+                    <div className="flex items-center justify-center">Aksi</div>
                   </th>
                 </tr>
               </thead>
@@ -187,28 +190,33 @@ const Purposes = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      #
+                      {number + 1}
                     </td>
-                    <td className="px-6 py-4 uppercase">{item.name}</td>
-                    <td className="px-6 py-4 uppercase">
+                    <td className="text-center px-6 py-4 uppercase">
+                      {item.name}
+                    </td>
+                    <td className="text-center px-6 py-4 uppercase">
                       {item.division.name}
                     </td>
-                    <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
-                      <div>
+                    <td className="flex items-center justify-center space-x-2">
+                      <div className="text-center">
                         <Toggle
                           checked={item.isActive}
                           onToggle={() => handleToggleChange(item.id)}
                         />
                       </div>
-                      <button
-                        className="btn-secondary"
-                        onClick={() => {
-                          setPurposeId(item.id);
-                          setIsOpenModalUpdate(true);
-                        }}
-                      >
-                        Edit
-                      </button>
+                      <div>
+                        <button
+                          className="btn-secondary"
+                          onClick={() => {
+                            setPurposeId(item.id);
+                            setIsOpenModalUpdate(true);
+                          }}
+                          title="Datail"
+                        >
+                          <MdEditNote className="large-icon" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
