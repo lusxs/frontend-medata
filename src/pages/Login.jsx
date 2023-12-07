@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { loginUser, reset } from "../features/authSlice";
 import LogoMinahasa from "../assets/logo-minahasa.png";
 import LogoDinsos from "../assets/logo-dinsos.png";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 import ToastError from "../components/common/toast/ToastError";
 import Loading from "../components/common/loading/Loading";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // Tambahkan ini
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -69,7 +71,7 @@ const Login = () => {
               <img src={LogoMinahasa} alt="Logo" className="h-20 w-30" />
               <img src={LogoDinsos} alt="Logo" className="h-20 w-30" />
             </div>
-            <h1 className="text-2xl font-bold text-center">Halooo</h1>
+            <h1 className="text-2xl font-bold text-center">SELAMAT DATANG</h1>
             <form className="mt-8 space-y-6" onSubmit={handleLogin}>
               <input type="hidden" name="remember" defaultValue="true" />
               <div className="relative">
@@ -82,15 +84,30 @@ const Login = () => {
                   onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
-              <div className="content-center mt-8">
+              <div className="content-center mt-8 relative">
                 <label className="text-sm font-bold tracking-wide text-gray-700">
                   Kata Sandi
                 </label>
-                <input
-                  className="content-center w-full py-2 text-base border-b border-gray-300 focus:outline-none focus:border-red-500"
-                  placeholder="*****"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="flex items-center">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="w-full py-2 text-base border-b border-gray-300 focus:outline-none focus:border-red-500"
+                    placeholder="*****"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="text-sm text-gray-500 hover:text-red-500 focus:outline-none"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <LuEyeOff className="large-icon" />
+                    ) : (
+                      <LuEye className="large-icon" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div>
                 <button

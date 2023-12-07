@@ -114,9 +114,9 @@ const Account = () => {
               </div>
             </div>
           </form>
-          <div>
+          {/* <div>
             <Link className="btn-primary">Tambah Pengguna</Link>
-          </div>
+          </div> */}
         </div>
         <table className="w-full text-sm text-left text-gray-500 shadow-sm">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">

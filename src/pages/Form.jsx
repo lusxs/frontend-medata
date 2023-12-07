@@ -49,7 +49,7 @@ const Form = () => {
       id: 3,
       name: "age",
       type: "text",
-      placeholder: "21",
+      placeholder: "Umur",
       label: "Umur",
       required: true,
       error: errors.age,
@@ -58,7 +58,7 @@ const Form = () => {
       id: 4,
       name: "citizenNumber",
       type: "text",
-      placeholder: "7171717171",
+      placeholder: "NIK",
       label: "NIK",
       required: false,
       error: errors.citizenNumber,
@@ -136,7 +136,8 @@ const Form = () => {
       }, 2500);
       setData({
         name: "",
-        email: "",
+        age: "",
+        citizenNumber: "",
         phoneNumber: "",
         profession: "",
         address: "",
@@ -145,7 +146,8 @@ const Form = () => {
       });
       setErrors({
         name: "",
-        email: "",
+        age: "",
+        citizenNumber: "",
         phoneNumber: "",
         profession: "",
         address: "",
@@ -166,7 +168,8 @@ const Form = () => {
     e.preventDefault();
     setData({
       name: "",
-      email: "",
+      age: "",
+      citizenNumber: "",
       phoneNumber: "",
       profession: "",
       address: "",
@@ -175,7 +178,8 @@ const Form = () => {
     });
     setErrors({
       name: "",
-      email: "",
+      age: "",
+      citizenNumber: "",
       phoneNumber: "",
       profession: "",
       address: "",
@@ -244,6 +248,7 @@ const Form = () => {
                     className="block mb-2 text-sm text-gray-600"
                   >
                     {input.label}
+                    {input.required && <span className="text-red-500">*</span>}
                   </label>
                   {input.type === "select" ? (
                     <select
@@ -266,13 +271,12 @@ const Form = () => {
                       <option value="" disabled>
                         Silahkan Pilih Tujuan
                       </option>
-                      {divisions.map((item) =>
-                        item.id === 1 ? null : (
-                          <option key={item.id} value={item.id}>
-                            {item.name}
-                          </option>
-                        )
-                      )}
+                      {divisions.map((item) => (
+                        // item.id === 1 ? null :
+                        <option key={item.id} value={item.id}>
+                          {item.name}
+                        </option>
+                      ))}
                     </select>
                   ) : (
                     <input
