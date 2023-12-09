@@ -32,9 +32,24 @@ const VisitorsNotCompleted = () => {
       setPage(response.data.page);
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
-      setData(response.data.result);
+      // Sort the data in reverse order based on timestamp or any other field
+      const sortedData = response.data.result.sort((a, b) => {
+        // Assuming createdAt is the timestamp field, adjust this based on your data
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      });
+
+      // Reverse the order of the sortedData array
+      const reversedData = [...sortedData].reverse();
+
+      const startIndex = rows - page * limit;
+      const updatedData = reversedData.map((item, index) => ({
+        ...item,
+        number: startIndex - index,
+      }));
+
+      setData(reversedData);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -218,13 +233,13 @@ const VisitorsNotCompleted = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, number) => (
-                  <tr key={number} className="bg-white">
+                {data.map((item, index) => (
+                  <tr key={index} className="bg-white">
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {number + 1}
+                      {index + 1 + page * limit}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
                       {parseAndFormatDateString(item.createdAt)}

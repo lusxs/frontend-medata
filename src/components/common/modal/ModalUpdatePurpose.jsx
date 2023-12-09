@@ -99,6 +99,9 @@ const ModalUpdatePurpose = ({
                     id="division"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   >
+                    <option value="" disabled>
+                      Silahkan Pilih Maksud Tujuan
+                    </option>
                     {divisions.map((item) =>
                       item.id === 1 ? null : (
                         <option key={item.id} value={item.id}>

@@ -192,13 +192,13 @@ const Visitors = () => {
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, number) => (
-                  <tr key={number} className="bg-white">
+                {data.map((item, index) => (
+                  <tr key={index} className="bg-white">
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {number + 1}
+                      {index + 1 + page * limit}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
                       {parseAndFormatDateString(item.createdAt)}

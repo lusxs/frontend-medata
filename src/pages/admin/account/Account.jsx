@@ -3,7 +3,6 @@ import DefaultLayout from "../../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
-import Toggle from "../../../components/common/toggle/Toggle";
 import { Link } from "react-router-dom";
 
 const Account = () => {
@@ -215,12 +214,12 @@ const Account = () => {
                     : ""}
                 </td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
-                  <div className="text-center">
+                  {/* <div className="text-center">
                     <Toggle
                       checked={item.isActive}
                       onToggle={() => handleToggleChange(item.uuid)}
                     />
-                  </div>
+                  </div> */}
                   {/* <Link
                     to={`/user/detail/${item.uuid}`}
                     className="btn-secondary"

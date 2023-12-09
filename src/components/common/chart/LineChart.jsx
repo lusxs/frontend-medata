@@ -25,12 +25,12 @@ ChartJS.register(
   SubTitle
 );
 
-const LineChart = ({ data, label, title }) => {
+const LineChart = ({ data, label, title, titleChart }) => {
   const chartData = {
     labels: label,
     datasets: [
       {
-        label: "Contoh Data",
+        label: titleChart,
         data: data, // Menggunakan prop 'data' yang diterima dari komponen
         fill: false,
         borderColor: "rgb(255, 0, 0)",

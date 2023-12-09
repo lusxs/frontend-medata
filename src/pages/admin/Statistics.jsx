@@ -21,6 +21,43 @@ const Statistics = () => {
   }, []);
   const chartData = [1, 2, 3, 5];
   const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
+  const chartDataWeekly = [0, 20, 30, 40, 50, 60, 70, 80];
+  const labelWeekly = [
+    "30 November",
+    "1 Desember",
+    "4 Desember",
+    "5 Desember",
+    "6 Desember",
+    "7 Desember",
+    "8 Desember",
+  ];
+  const chartDataMonthly = [0, 50, 100, 150, 200];
+  const labelMonthly = ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"];
+  const chartDataHexaly = [0, 200, 300, 400, 500, 600, 700];
+  const labelHexaly = [
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+  const chartDataYearly = [0, 1000, 2000, 3000, 4000, 5000, 6000];
+  const labelYearly = [
+    "Januari",
+    "Februari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
+
   return (
     <DefaultLayout>
       <form className="my-4">
@@ -44,10 +81,30 @@ const Statistics = () => {
         </div>
       </form>
       <div className="grid grid-cols-2 gap-4">
-        <LineChart data={chartData} label={label} title="7 Hari Terakhir" />
-        <LineChart data={chartData} label={label} title="Desember" />
-        <LineChart data={chartData} label={label} title="6 Bulan Terakhir" />
-        <LineChart data={chartData} label={label} title="Tahun" />
+        <LineChart
+          data={chartDataWeekly}
+          label={labelWeekly}
+          title="7 Hari Terakhir"
+          titleChart="Data Pengunjung"
+        />
+        <LineChart
+          data={chartDataMonthly}
+          label={labelMonthly}
+          title="Desember"
+          titleChart="Data Pengunjung"
+        />
+        <LineChart
+          data={chartDataHexaly}
+          label={labelHexaly}
+          title="6 Bulan Terakhir"
+          titleChart="Data Pengunjung"
+        />
+        <LineChart
+          data={chartDataYearly}
+          label={labelYearly}
+          title="Tahun"
+          titleChart="Data Pengunjung"
+        />
       </div>
     </DefaultLayout>
   );
