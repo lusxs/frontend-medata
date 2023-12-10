@@ -24,7 +24,7 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
         name,
         divisionId,
       });
-      if (response) {
+      if (response.data) {
         setIsOpenModal(false);
       }
     } catch (error) {
@@ -56,16 +56,17 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
                   <input
                     type="text"
                     onChange={(e) => setName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
+                    placeholder="Mauskan Maksud Tujuan"
+                    className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   />
                 </div>
-                <div>
+                <div className="mt-6">
                   <label htmlFor="division">Bidang</label>
                   <select
                     name="division"
                     id="division"
                     onChange={(e) => setDivisionId(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
+                    className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   >
                     <option value="" disabled>
                       Silahkan Pilih Maksud Tujuan
@@ -80,7 +81,6 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
                     )}
                   </select>
                 </div>
-
                 <button className="w-full mt-6 btn-primary">Simpan</button>
               </form>
             </div>

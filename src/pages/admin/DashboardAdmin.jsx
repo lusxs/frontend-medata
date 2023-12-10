@@ -10,6 +10,9 @@ import LineChart from "../../components/common/chart/LineChart";
 import CircularProgressBar from "../../components/common/progressbar/CircularProgressBar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { HiMiniUsers, HiBuildingOffice } from "react-icons/hi2";
+import { BsPersonFillCheck } from "react-icons/bs";
+import { BsPersonFillExclamation } from "react-icons/bs";
+import { BsPersonFillX } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
 
 const DashboardAdmin = () => {
@@ -17,7 +20,7 @@ const DashboardAdmin = () => {
   const [total, setTotal] = useState(0);
   const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
   const dispatch = useDispatch();
-  const chartData = [1, 2, 3, 5];
+  const [purposeData, setPurposeData] = useState([]);
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
   useEffect(() => {
@@ -68,7 +71,7 @@ const DashboardAdmin = () => {
                   </>
                 }
                 data={`11`}
-                title="Bidang RESOS"
+                title="Bidang PFM"
               />
               <CardDashboard
                 child={
@@ -122,7 +125,7 @@ const DashboardAdmin = () => {
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillExclamation size={70} />
                     </div>
                   </>
                 }
@@ -133,7 +136,7 @@ const DashboardAdmin = () => {
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillCheck size={70} />
                     </div>
                   </>
                 }
@@ -144,7 +147,7 @@ const DashboardAdmin = () => {
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillX size={70} />
                     </div>
                   </>
                 }

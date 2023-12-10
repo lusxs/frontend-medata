@@ -8,25 +8,16 @@ import { parseAndFormatDateString } from "../../utils/helper";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(0);
-  const limit = 5;
-  const [pages, setPages] = useState(0);
-  const [rows, setRows] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
   const [id, setId] = useState("");
-  const [startDate, setStartDate] = useState(null); // Added
-  const [endDate, setEndDate] = useState(null); // Added
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/forms?search_query=${keyword}&page=${page}&limit=${limit}&status=${status}&start_date=${startDate}&end_date=${endDate}`
+        `http://localhost:5000/reports?startDate=${startDate}&endDate=${endDate}`
       );
-      setPage(response.data.page);
-      setPages(response.data.totalPage);
-      setRows(response.data.totalRows);
       setData(response.data.result);
       console.log(response.data.result);
     } catch (error) {
@@ -36,24 +27,7 @@ const Visitors = () => {
 
   useEffect(() => {
     fetchData();
-  }, [page, keyword, startDate, endDate]);
-
-  const changePage = ({ selected }) => {
-    setPage(selected);
-    setMessage(
-      selected === 9
-        ? "Jika tidak menemukan data yang Anda cari, silahkan cari data dengan kata kunci spesifik!"
-        : ""
-    );
-  };
-
-  const searchData = (e) => {
-    e.preventDefault();
-    setPage(0);
-    setMessage("");
-    setKeyword(query);
-    fetchData();
-  };
+  }, [startDate, endDate]);
 
   return (
     <DefaultLayout>
@@ -62,9 +36,6 @@ const Visitors = () => {
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
           dateFormat="dd/MM/yyyy"
           placeholderText="Tanggal Awal"
           className="p-2 border rounded"
@@ -72,16 +43,10 @@ const Visitors = () => {
         <DatePicker
           selected={endDate}
           onChange={(date) => setEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
           dateFormat="dd/MM/yyyy"
           placeholderText="Tanggal Akhir"
           className="p-2 border rounded"
         />
-        <button onClick={searchData} className="btn-secondary">
-          Cari
-        </button>
       </div>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
@@ -299,38 +264,6 @@ const Visitors = () => {
                 ))}
               </tbody>
             </table>
-
-            <div className="flex justify-center mt-4 rounded-sm">
-              <nav
-                className=""
-                key={rows}
-                role="navigation"
-                aria-label="pagination"
-              >
-                <ReactPaginate
-                  previousLabel={"<"}
-                  nextLabel={">"}
-                  pageCount={Math.min(10, pages)}
-                  onPageChange={changePage}
-                  containerClassName={
-                    "flex items-center h-8 -space-x-px text-sm "
-                  }
-                  pageLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  previousLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  nextLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-                  }
-                  activeLinkClassName={
-                    "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-                  }
-                  disabledLinkClassName={"pagination-link is-disabled"}
-                />
-              </nav>
-            </div>
           </>
         ) : (
           <>

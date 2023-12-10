@@ -87,21 +87,18 @@ const ModalUpdatePurpose = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
+                    className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   />
                 </div>
-                <div>
+                <div className="mt-6">
                   <label htmlFor="">Bidang</label>
                   <select
                     name="division"
                     value={divisionId}
                     onChange={(e) => setDivisionId(e.target.value)}
                     id="division"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
+                    className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   >
-                    <option value="" disabled>
-                      Silahkan Pilih Maksud Tujuan
-                    </option>
                     {divisions.map((item) =>
                       item.id === 1 ? null : (
                         <option key={item.id} value={item.id}>
