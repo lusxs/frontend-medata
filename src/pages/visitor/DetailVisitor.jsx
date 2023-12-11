@@ -1,24 +1,23 @@
 import { useParams } from "react-router-dom";
 import DefaultLayout from "../../layout/DefaultLayout";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import useFetch from "../../hooks/useFetch";
+import Loading from "../../components/common/loading/Loading";
+import Error from "../../components/common/error/Error";
+import Input from "../../components/common/input/Input";
 
 const DetailVisitor = () => {
   const { id } = useParams();
   const [detailVisitor, setDetailVisitor] = useState({});
-
-  const fetchDataVisitor = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/form/${id}`);
-      setDetailVisitor(response.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { apiData, isLoading, isError } = useFetch(
+    `http://localhost:5000/form/${id}`
+  );
 
   useEffect(() => {
-    fetchDataVisitor();
-  }, [id]);
+    if (apiData) {
+      setDetailVisitor(apiData.result);
+    }
+  }, [apiData]);
 
   let status;
 
@@ -34,142 +33,90 @@ const DetailVisitor = () => {
       break;
   }
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
+  }
+
   return (
     <DefaultLayout>
       <h3 className="text-xl font-bold">Detail Data Pengunjung</h3>
       <div className="flex flex-col mt-6 space-y-4">
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Nama
-          </label>
-          <input
-            placeholder={detailVisitor?.name}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Umur
-          </label>
-          <input
-            placeholder={detailVisitor?.age}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            NIK
-          </label>
-          <input
-            placeholder={detailVisitor?.citizenNumber}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Nomor Kontak
-          </label>
-          <input
-            placeholder={detailVisitor?.phoneNumber}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Pekerjaan
-          </label>
-          <input
-            placeholder={detailVisitor?.profession}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Alamat
-          </label>
-          <input
-            placeholder={detailVisitor?.address}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Status
-          </label>
-          <input
-            placeholder={status}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Divisi
-          </label>
-          <input
-            placeholder={detailVisitor?.division?.name}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
-        <div>
-          <label
-            htmlFor=""
-            className="block mb-2 text-sm font-semibold text-gray-600"
-          >
-            Maksud Tujuan
-          </label>
-          <input
-            placeholder={detailVisitor?.purpose?.name}
-            type="text"
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 mt-1 focus:ring-red-500`}
-            disabled
-          />
-        </div>
+        <Input
+          label="Nama"
+          type={"text"}
+          value={detailVisitor?.name}
+          onChange={null}
+          placeholder={detailVisitor?.name}
+          disabled={true}
+        />
+        <Input
+          label="Umur"
+          type={"text"}
+          value={detailVisitor?.age}
+          onChange={null}
+          placeholder={detailVisitor?.age}
+          disabled={true}
+        />
+        <Input
+          label="NIK"
+          type={"text"}
+          value={detailVisitor?.citizenNumber}
+          onChange={null}
+          placeholder={detailVisitor?.citizenNumber}
+          disabled={true}
+        />
+        <Input
+          label="Nomor Kontak"
+          type={"text"}
+          value={detailVisitor?.phoneNumber}
+          onChange={null}
+          placeholder={detailVisitor?.phoneNumber}
+          disabled={true}
+        />
+        <Input
+          label="Pekerjaan"
+          type={"text"}
+          value={detailVisitor?.profession}
+          onChange={null}
+          placeholder={detailVisitor?.profession}
+          disabled={true}
+        />
+        <Input
+          label="Alamat"
+          type={"text"}
+          value={detailVisitor?.address}
+          onChange={null}
+          placeholder={detailVisitor?.address}
+          disabled={true}
+        />
+        <Input
+          label="Status"
+          type={"text"}
+          value={status}
+          onChange={null}
+          placeholder={status}
+          disabled={true}
+        />
+        <Input
+          label="Divisi"
+          type={"text"}
+          value={detailVisitor?.division?.name}
+          onChange={null}
+          placeholder={detailVisitor?.division?.name}
+          disabled={true}
+        />
+        <Input
+          label="Maksud Tujuan"
+          type={"text"}
+          value={detailVisitor?.purpose?.name}
+          onChange={null}
+          placeholder={detailVisitor?.purpose?.name}
+          disabled={true}
+        />
       </div>
     </DefaultLayout>
   );

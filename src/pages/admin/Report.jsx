@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import ReactPaginate from "react-paginate";
+import DefaultLayout from "../../layout/DefaultLayout";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ReportDataVisitors from "../../components/common/pdf/Report";
+import ToastError from "../../components/common/toast/ToastError";
+import ToastLoading from "../../components/common/toast/ToastLoading";
 import { parseAndFormatDateString } from "../../utils/helper";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
-  const [message, setMessage] = useState("");
-  const [id, setId] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -21,7 +22,7 @@ const Visitors = () => {
       setData(response.data.result);
       console.log(response.data.result);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -29,24 +30,47 @@ const Visitors = () => {
     fetchData();
   }, [startDate, endDate]);
 
+  const handleRenderPdf = ({ loading, error }) => {
+    if (loading) {
+      return <ToastLoading message="Memuat..." />;
+    } else if (error) {
+      return <ToastError message="Gagal" />;
+    } else {
+      return (
+        <button className="btn" disabled={loading}>
+          Download PDF
+        </button>
+      );
+    }
+  };
+
   return (
     <DefaultLayout>
       <h5 className="mt-6 mb-4 text-xl font-semibold">Laporan</h5>
-      <div className="mb-4 flex items-center space-x-4">
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          dateFormat="dd/MM/yyyy"
-          placeholderText="Tanggal Awal"
-          className="p-2 border rounded"
-        />
-        <DatePicker
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          dateFormat="dd/MM/yyyy"
-          placeholderText="Tanggal Akhir"
-          className="p-2 border rounded"
-        />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center mb-4 space-x-4">
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Tanggal Awal"
+            className="p-2 border rounded"
+          />
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Tanggal Akhir"
+            className="p-2 border rounded"
+          />
+        </div>
+        <PDFDownloadLink
+          document={<ReportDataVisitors data={data} />}
+          fileName="table.pdf"
+          className="btn-primary"
+        >
+          {handleRenderPdf}
+        </PDFDownloadLink>
       </div>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
@@ -273,9 +297,7 @@ const Visitors = () => {
           </>
         )}
       </div>
-      <div className="flex">
-        <button className="btn-primary ml-auto ">Cetak</button>
-      </div>
+      <div className="flex"></div>
     </DefaultLayout>
   );
 };

@@ -2,10 +2,11 @@ import { useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
-import ReactPaginate from "react-paginate";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
 import { Link } from "react-router-dom";
+import Pagination from "../../components/common/pagination/Pagination";
+import ToastError from "../../components/common/toast/ToastError";
 
 const VisitorsCanceled = () => {
   const [data, setData] = useState([]);
@@ -54,6 +55,7 @@ const VisitorsCanceled = () => {
 
   return (
     <DefaultLayout>
+      {message && <ToastError message={message} />}
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan Batal</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
@@ -200,19 +202,19 @@ const VisitorsCanceled = () => {
                     >
                       {index + 1 + page * limit}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {parseAndFormatDateString(item.createdAt)}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.name}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.purpose.name}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.division.name}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.status === "CANCELED" ? "Batal Proses" : ""}
                     </td>
                     <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
@@ -229,37 +231,13 @@ const VisitorsCanceled = () => {
               </tbody>
             </table>
 
-            <div className="flex justify-center mt-4 rounded-sm">
-              <nav
-                className=""
-                key={rows}
-                role="navigation"
-                aria-label="pagination"
-              >
-                <ReactPaginate
-                  previousLabel={"<"}
-                  nextLabel={">"}
-                  pageCount={Math.min(10, pages)}
-                  onPageChange={changePage}
-                  containerClassName={
-                    "flex items-center h-8 -space-x-px text-sm "
-                  }
-                  pageLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  previousLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  nextLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-                  }
-                  activeLinkClassName={
-                    "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-                  }
-                  disabledLinkClassName={"pagination-link is-disabled"}
-                />
-              </nav>
-            </div>
+            <Pagination
+              page={page}
+              pages={pages}
+              rows={rows}
+              pageCount={Math.min(10, pages)}
+              onPageChange={changePage}
+            />
           </>
         ) : (
           <>

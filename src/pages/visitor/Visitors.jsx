@@ -2,8 +2,9 @@ import { useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
-import ReactPaginate from "react-paginate";
 import { parseAndFormatDateString } from "../../utils/helper";
+import Pagination from "../../components/common/pagination/Pagination";
+import ToastError from "../../components/common/toast/ToastError";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
@@ -14,7 +15,6 @@ const Visitors = () => {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
-  const [id, setId] = useState("");
   const status = "";
   const fetchData = async () => {
     try {
@@ -25,7 +25,6 @@ const Visitors = () => {
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
       setData(response.data.result);
-      console.log(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -53,6 +52,7 @@ const Visitors = () => {
 
   return (
     <DefaultLayout>
+      {message && <ToastError message={message} />}
       <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         {data.length !== 0 ? (
@@ -221,38 +221,13 @@ const Visitors = () => {
                 ))}
               </tbody>
             </table>
-
-            <div className="flex justify-center mt-4 rounded-sm">
-              <nav
-                className=""
-                key={rows}
-                role="navigation"
-                aria-label="pagination"
-              >
-                <ReactPaginate
-                  previousLabel={"<"}
-                  nextLabel={">"}
-                  pageCount={Math.min(10, pages)}
-                  onPageChange={changePage}
-                  containerClassName={
-                    "flex items-center h-8 -space-x-px text-sm "
-                  }
-                  pageLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  previousLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  nextLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-                  }
-                  activeLinkClassName={
-                    "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-                  }
-                  disabledLinkClassName={"pagination-link is-disabled"}
-                />
-              </nav>
-            </div>
+            <Pagination
+              page={page}
+              pages={pages}
+              rows={rows}
+              pageCount={Math.min(10, pages)}
+              onPageChange={changePage}
+            />
           </>
         ) : (
           <>

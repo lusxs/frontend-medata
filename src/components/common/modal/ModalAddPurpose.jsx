@@ -52,7 +52,9 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
             <div>
               <form onSubmit={addPurpose}>
                 <div>
-                  <label htmlFor="">Nama</label>
+                  <label htmlFor="" className="font-semibold">
+                    Nama
+                  </label>
                   <input
                     type="text"
                     onChange={(e) => setName(e.target.value)}
@@ -61,7 +63,9 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
                   />
                 </div>
                 <div className="mt-6">
-                  <label htmlFor="division">Bidang</label>
+                  <label htmlFor="division" className="font-semibold">
+                    Bidang
+                  </label>
                   <select
                     name="division"
                     id="division"

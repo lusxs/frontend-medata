@@ -3,13 +3,14 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-import ReactPaginate from "react-paginate";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { MdOutlineCancel } from "react-icons/md";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
 import ModalUpdateStatus from "../../components/common/modal/ModalUpdateStatus";
 import { STATUS } from "../../utils/constanta";
+import Pagination from "../../components/common/pagination/Pagination";
+import ToastError from "../../components/common/toast/ToastError";
 
 const VisitorsNotCompleted = () => {
   const [data, setData] = useState([]);
@@ -42,7 +43,7 @@ const VisitorsNotCompleted = () => {
       const reversedData = [...sortedData].reverse();
 
       const startIndex = rows - page * limit;
-      const updatedData = reversedData.map((item, index) => ({
+      reversedData.map((item, index) => ({
         ...item,
         number: startIndex - index,
       }));
@@ -75,6 +76,7 @@ const VisitorsNotCompleted = () => {
 
   return (
     <DefaultLayout>
+      {message && <ToastError message={message} />}
       {isCancel && (
         <ModalUpdateStatus
           onClose={setIsCancel}
@@ -289,38 +291,13 @@ const VisitorsNotCompleted = () => {
                 ))}
               </tbody>
             </table>
-
-            <div className="flex justify-center mt-4 rounded-sm">
-              <nav
-                className=""
-                key={rows}
-                role="navigation"
-                aria-label="pagination"
-              >
-                <ReactPaginate
-                  previousLabel={"<"}
-                  nextLabel={">"}
-                  pageCount={Math.min(10, pages)}
-                  onPageChange={changePage}
-                  containerClassName={
-                    "flex items-center h-8 -space-x-px text-sm "
-                  }
-                  pageLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  previousLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
-                  }
-                  nextLinkClassName={
-                    "flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 "
-                  }
-                  activeLinkClassName={
-                    "z-10 flex items-center justify-center h-8 px-3 leading-tight border text-primary-600 border-primary-300 bg-primary-50 hover:bg-primary-100 hover:text-primary-700 "
-                  }
-                  disabledLinkClassName={"pagination-link is-disabled"}
-                />
-              </nav>
-            </div>
+            <Pagination
+              page={page}
+              pages={pages}
+              rows={rows}
+              pageCount={Math.min(10, pages)}
+              onPageChange={changePage}
+            />
           </>
         ) : (
           <>

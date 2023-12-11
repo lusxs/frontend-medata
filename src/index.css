@@ -18,9 +18,9 @@ select:-webkit-autofill:focus {
   transition: white 5000s ease-in-out 0s;
   background: white;
 }
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 .z-index-top {
   z-index: 999;

@@ -82,7 +82,9 @@ const ModalUpdatePurpose = ({
             <div>
               <form onSubmit={updateDivision}>
                 <div>
-                  <label htmlFor="">Nama</label>
+                  <label htmlFor="" className="font-semibold">
+                    Nama
+                  </label>
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -91,7 +93,9 @@ const ModalUpdatePurpose = ({
                   />
                 </div>
                 <div className="mt-6">
-                  <label htmlFor="">Bidang</label>
+                  <label htmlFor="" className="font-semibold">
+                    Bidang
+                  </label>
                   <select
                     name="division"
                     value={divisionId}
