@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import LineChart from "../../components/common/chart/LineChart";
 import axios from "axios";
+import { generateWeeklyData } from "../../utils/helper";
 
 const Statistics = () => {
   const [divisions, setDivisons] = useState([]);
   const [divisionId, setDivisionId] = useState(2);
+  const [labelWeekly, setLabelWeekly] = useState([]);
 
   const fetchDivisions = async () => {
     try {
@@ -17,20 +19,14 @@ const Statistics = () => {
     }
   };
   useEffect(() => {
+    const generate = generateWeeklyData();
+    setLabelWeekly(generate);
     fetchDivisions();
   }, []);
+
   const chartData = [1, 2, 3, 5];
   const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
   const chartDataWeekly = [0, 20, 30, 40, 50, 60, 70, 80];
-  const labelWeekly = [
-    "30 November",
-    "1 Desember",
-    "4 Desember",
-    "5 Desember",
-    "6 Desember",
-    "7 Desember",
-    "8 Desember",
-  ];
   const chartDataMonthly = [0, 50, 100, 150, 200];
   const labelMonthly = ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"];
   const chartDataHexaly = [0, 200, 300, 400, 500, 600, 700];

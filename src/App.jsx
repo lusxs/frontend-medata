@@ -13,7 +13,7 @@ import VisitorsCompleted from "./pages/visitor/VisitorsCompleted";
 import VisitorsCanceled from "./pages/visitor/VisitorsCanceled";
 import DetailVisitor from "./pages/visitor/DetailVisitor";
 import VisitorsNotCompleted from "./pages/visitor/VisitorsNotCompleted";
-import CardHappyBirhtday from "./components/ucya/CardHappyBirthday";
+// import CardHappyBirhtday from "./components/ucya/CardHappyBirthday";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Form = lazy(() => import("./pages/Form"));
@@ -29,18 +29,26 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route
+          {/* <Route
             path="/"
             element={
               <Suspense fallback={<Loading />}>
                 <CardHappyBirhtday />
               </Suspense>
             }
+          /> */}
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Form />
+              </Suspense>
+            }
           />
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFound />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
           {/* Admin */}
-          {/* <Route
+          <Route
             path="/dashboard"
             element={
               <Suspense fallback={<Loading />}>
@@ -127,25 +135,25 @@ function App() {
                 <Report />
               </Suspense>
             }
-          /> */}
+          />
           {/* Secretary */}
-          {/* <Route
+          <Route
             path="/secretary/dashboard"
             element={
               <Suspense fallback={<Loading />}>
                 <DashboardSecretary />
               </Suspense>
             }
-          /> */}
+          />
           {/* Division */}
-          {/* <Route
+          <Route
             path="/division/dashboard"
             element={
               <Suspense fallback={<Loading />}>
                 <DashboardDivision />
               </Suspense>
             }
-          /> */}
+          />
         </Routes>
       </Router>
     </>

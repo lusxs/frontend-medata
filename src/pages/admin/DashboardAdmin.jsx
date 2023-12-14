@@ -5,9 +5,6 @@ import { getMe } from "../../features/authSlice";
 import axios from "axios";
 import CardDashboard from "../../components/common/card/CardDashboard";
 import CardDashboardSkeleton from "../../components/common/card/CardDashboardSkeleton";
-import BarSkeleton from "../../components/common/skeleton/BarSkeleton";
-import LineChart from "../../components/common/chart/LineChart";
-import CircularProgressBar from "../../components/common/progressbar/CircularProgressBar";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { HiMiniUsers, HiBuildingOffice } from "react-icons/hi2";
 import { BsPersonFillCheck } from "react-icons/bs";
@@ -48,6 +45,34 @@ const DashboardAdmin = () => {
 
     fetchPurposes();
   }, [total]);
+
+  useEffect(() => {
+    const fetchVisitCounts = async () => {
+      const purposeDataWithVisitCounts = await Promise.all(
+        data.map(async (item) => {
+          try {
+            const response = await axios.get(
+              `http://localhost:5000/visits/count?purposeId=${item.id}`
+            );
+            const visitCount = response.data.visitCount;
+            return {
+              ...item,
+              visitCount,
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching visit count for purpose ${item.id}:`,
+              error
+            );
+            return item;
+          }
+        })
+      );
+      setPurposeData(purposeDataWithVisitCounts);
+    };
+
+    fetchVisitCounts();
+  }, [data]);
 
   return (
     <DefaultLayout>
@@ -180,7 +205,7 @@ const DashboardAdmin = () => {
                       </div>
                     </>
                   }
-                  data={`11`}
+                  data={item.visitCount}
                   title={item.name}
                 />
               ))}

@@ -18,9 +18,9 @@ select:-webkit-autofill:focus {
   transition: white 5000s ease-in-out 0s;
   background: white;
 }
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
 
 .z-index-top {
   z-index: 999;
@@ -81,4 +81,29 @@ select:-webkit-autofill:focus {
 
 .large-icon {
   font-size: 20px;
+}
+
+.btn-secondary {
+  @apply uppercase py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-4 focus:ring-gray-200;
+}
+
+/* Styling untuk nama perusahaan */
+.companyName {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333; /* Warna teks sesuaikan dengan kebutuhan */
+  margin-bottom: 10px;
+}
+
+/* Styling untuk alamat */
+.companyAddress {
+  font-size: 16px;
+  color: #555; /* Warna teks sesuaikan dengan kebutuhan */
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 50px; /* Sesuaikan dengan ukuran yang diinginkan */
+  height: 50px;
+  margin-right: 10px;
 }

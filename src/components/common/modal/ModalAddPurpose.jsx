@@ -3,10 +3,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const ModalAddPurpose = ({ setIsOpenModal }) => {
+const ModalAddPurpose = ({ setIsOpenModal, updateTable }) => {
   const [divisions, setDivisons] = useState([]);
   const [name, setName] = useState("");
-  const [divisionId, setDivisionId] = useState(2);
+  const [divisionId, setDivisionId] = useState(1);
 
   const fetchDivisions = async () => {
     try {
@@ -18,13 +18,21 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
     }
   };
 
-  const addPurpose = async () => {
+  const addPurpose = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post("http://localhost:5000/purpose", {
         name,
         divisionId,
       });
       if (response.data) {
+        // Fetch updated data after the update
+        const updatedResponse = await axios.get(
+          `http://localhost:5000/purposes`
+        );
+
+        // Update the table with the new data
+        updateTable(updatedResponse.data.result);
         setIsOpenModal(false);
       }
     } catch (error) {
@@ -85,7 +93,9 @@ const ModalAddPurpose = ({ setIsOpenModal }) => {
                     )}
                   </select>
                 </div>
-                <button className="w-full mt-6 btn-primary">Simpan</button>
+                <button type="submit" className="w-full mt-6 btn-primary">
+                  Simpan
+                </button>
               </form>
             </div>
           </div>
