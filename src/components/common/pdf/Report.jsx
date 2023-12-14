@@ -10,74 +10,105 @@ import {
 import LogoMinahasa from "../../../assets/logo-minahasa.png";
 import LogoDinsos from "../../../assets/logo-dinsos.png";
 
-const Report = ({ data }) => (
-  <Document>
-    <Page style={styles.page} size="A4" orientation="landscape">
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={LogoMinahasa} />
-          <View style={styles.companyInfo}>
-            <Text style={styles.companyName}>
-              DINAS SOSIAL KABUPATEN MINAHASA
-            </Text>
-            <Text style={styles.companyAddress}>
-              Jl. Sasaran, Sasaran, Kec. Tondano Utara, Kabupaten Minahasa,
-              Sulawesi Utara
-            </Text>
+const Report = ({ data, startDate, endDate }) => {
+  const filteredData = data.filter(
+    (item) => item.createdAt >= startDate && item.createdAt <= endDate
+  );
+
+  // Count visits based on status
+  const completedCount = filteredData.filter(
+    (item) => item.status === "COMPLETED"
+  ).length;
+  const notCompletedCount = filteredData.filter(
+    (item) => item.status === "NOT COMPLETED"
+  ).length;
+  const canceledCount = filteredData.filter(
+    (item) => item.status === "CANCELED"
+  ).length;
+
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getDate()}/${
+    currentDate.getMonth() + 1
+  }/${currentDate.getFullYear()} ${currentDate.getHours()}:${currentDate.getMinutes()}`;
+
+  return (
+    <Document>
+      <Page style={styles.page} size="A4" orientation="landscape">
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={LogoMinahasa} />
+            <View style={styles.companyInfo}>
+              <Text style={styles.companyName}>
+                DINAS SOSIAL KABUPATEN MINAHASA
+              </Text>
+              <Text style={styles.companyAddress}>
+                Jl. Sasaran, Sasaran, Kec. Tondano Utara, Kabupaten Minahasa,
+                Sulawesi Utara
+              </Text>
+            </View>
+            <Image style={styles.logo} source={LogoDinsos} />
           </View>
-          <Image style={styles.logo} source={LogoDinsos} />
         </View>
-      </View>
-      <Text style={styles.reportTitle}>LAPORAN PENGUNJUNG</Text>
-      <Text style={styles.date}>Hari/Tanggal Terbit: </Text>
-      <View style={styles.table}>
-        <View style={styles.tableRow}>
-          {[
-            "No",
-            "Tanggal",
-            "Nama",
-            "Umur",
-            "NIK",
-            "Kontak",
-            "Pekerjaan",
-            "Alamat",
-            "Tujuan",
-            "Bidang",
-            "Status", // Menambahkan kolom status
-          ].map((header, index) => (
-            <Text key={index} style={styles.columnHeader}>
-              {header}
-            </Text>
-          ))}
-        </View>
-        {data.map((item, index) => (
-          <View key={index} style={styles.tableRow}>
+        <Text style={styles.reportTitle}>LAPORAN PENGUNJUNG</Text>
+        <Text style={styles.date}>Hari/Tanggal Terbit: {formattedDate} </Text>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
             {[
-              index + 1,
-              item.createdAt,
-              item.name,
-              item.age,
-              item.citizenNumber,
-              item.phoneNumber,
-              item.profession,
-              item.address,
-              item.purpose.name,
-              item.division.name,
-              getStatusLabel(item.status),
-            ].map((cell, i) => (
-              <Text key={i} style={styles.columnCell}>
-                {cell}
+              "No",
+              "Tanggal",
+              "Nama",
+              "Umur",
+              "NIK",
+              "Kontak",
+              "Pekerjaan",
+              "Alamat",
+              "Tujuan",
+              "Bidang",
+              "Status", // Menambahkan kolom status
+            ].map((header, index) => (
+              <Text key={index} style={styles.columnHeader}>
+                {header}
               </Text>
             ))}
           </View>
-        ))}
-      </View>
-      <Text style={styles.status}>Jumlah kunjungan selesai: </Text>
-      <Text style={styles.status}>Jumlah kunjungan batal proses: </Text>
-      <Text style={styles.status}>Jumlah kunjungan belum proses: </Text>
-    </Page>
-  </Document>
-);
+          {data.map((item, index) => (
+            <View key={index} style={styles.tableRow}>
+              {[
+                index + 1,
+                item.createdAt,
+                item.name,
+                item.age,
+                item.citizenNumber,
+                item.phoneNumber,
+                item.profession,
+                item.address,
+                item.purpose.name,
+                item.division.name,
+                getStatusLabel(item.status),
+              ].map((cell, i) => (
+                <Text key={i} style={styles.columnCell}>
+                  {cell}
+                </Text>
+              ))}
+            </View>
+          ))}
+        </View>
+        <Text style={styles.status}>
+          Jumlah kunjungan selesai: {completedCount}
+        </Text>
+        <Text style={styles.status}>
+          Jumlah kunjungan batal proses: {canceledCount}
+        </Text>
+        <Text style={styles.status}>
+          Jumlah kunjungan belum proses: {notCompletedCount}
+        </Text>
+        <Text style={styles.status}>
+          Jumlah kunjungan total: {filteredData.length}
+        </Text>
+      </Page>
+    </Document>
+  );
+};
 
 const getStatusLabel = (status) => {
   switch (status) {
@@ -101,12 +132,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 5,
-    justifyContent: "space-between",
+    justifyContent: "center",
     borderBottomWidth: 2,
+    marginBottom: 5,
   },
   logoContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between", // Distribute space between the logos
+    width: "100%", // Take the full width available
   },
   companyName: {
     fontSize: 18,
@@ -127,7 +161,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     height: 60,
     paddingBottom: 4,
-    marginRight: 10,
   },
   date: {
     fontSize: 12,
@@ -140,7 +173,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 28,
-    marginBottom: 45,
+    marginBottom: 30,
   },
   table: {
     display: "table",
@@ -150,6 +183,7 @@ const styles = StyleSheet.create({
     borderColor: "#B4B4B4", // Tambahkan borderColor
     borderRightWidth: 1,
     borderBottomWidth: 0,
+    paddingBottom: 4,
   },
   tableRow: {
     flexDirection: "row",
@@ -174,10 +208,10 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
   },
   status: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "medium",
     color: "#000000",
-    paddingBottom: 4,
+    paddingBottom: 2,
   },
 });
 

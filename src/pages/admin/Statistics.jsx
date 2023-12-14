@@ -5,9 +5,10 @@ import axios from "axios";
 import { generateWeeklyData } from "../../utils/helper";
 
 const Statistics = () => {
-  const [divisions, setDivisons] = useState([]);
+  const [divisions, setDivisions] = useState([]);
   const [divisionId, setDivisionId] = useState(2);
   const [labelWeekly, setLabelWeekly] = useState([]);
+  const [chartDataWeekly, setChartDataWeekly] = useState([]);
 
   const fetchDivisions = async () => {
     try {
@@ -26,7 +27,6 @@ const Statistics = () => {
 
   const chartData = [1, 2, 3, 5];
   const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
-  const chartDataWeekly = [0, 20, 30, 40, 50, 60, 70, 80];
   const chartDataMonthly = [0, 50, 100, 150, 200];
   const labelMonthly = ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"];
   const chartDataHexaly = [0, 200, 300, 400, 500, 600, 700];
