@@ -14,7 +14,7 @@ const Statistics = () => {
     try {
       const response = await axios.get("http://localhost:5000/divisions");
       console.log(response.data);
-      setDivisons(response.data.result);
+      setDivisions(response.data.result); // Corrected typo here
     } catch (error) {
       console.log(error);
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Document,
   Page,
@@ -9,23 +9,9 @@ import {
 } from "@react-pdf/renderer";
 import LogoMinahasa from "../../../assets/logo-minahasa.png";
 import LogoDinsos from "../../../assets/logo-dinsos.png";
+import { parseAndFormatDateString } from "../../../utils/helper";
 
-const Report = ({ data, startDate, endDate }) => {
-  const filteredData = data.filter(
-    (item) => item.createdAt >= startDate && item.createdAt <= endDate
-  );
-
-  // Count visits based on status
-  const completedCount = filteredData.filter(
-    (item) => item.status === "COMPLETED"
-  ).length;
-  const notCompletedCount = filteredData.filter(
-    (item) => item.status === "NOT COMPLETED"
-  ).length;
-  const canceledCount = filteredData.filter(
-    (item) => item.status === "CANCELED"
-  ).length;
-
+const Report = ({ data, completedCount, notCompletedCount, canceledCount }) => {
   const currentDate = new Date();
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
@@ -75,7 +61,7 @@ const Report = ({ data, startDate, endDate }) => {
             <View key={index} style={styles.tableRow}>
               {[
                 index + 1,
-                item.createdAt,
+                parseAndFormatDateString(item.createdAt),
                 item.name,
                 item.age,
                 item.citizenNumber,
@@ -102,9 +88,7 @@ const Report = ({ data, startDate, endDate }) => {
         <Text style={styles.status}>
           Jumlah kunjungan belum proses: {notCompletedCount}
         </Text>
-        <Text style={styles.status}>
-          Jumlah kunjungan total: {filteredData.length}
-        </Text>
+        <Text style={styles.status}>Jumlah kunjungan total:</Text>
       </Page>
     </Document>
   );

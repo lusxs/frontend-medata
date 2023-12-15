@@ -20,6 +20,7 @@ const DashboardAdmin = () => {
   const [purposeData, setPurposeData] = useState([]);
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
+  const [visitorCount, setVisitorCount] = useState(0); // Add this line
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
@@ -45,6 +46,21 @@ const DashboardAdmin = () => {
 
     fetchPurposes();
   }, [total]);
+
+  useEffect(() => {
+    const countVisitors = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/visits/countDataVisitorToday"
+        );
+        setVisitorCount(response.data.result);
+      } catch (error) {
+        console.error("Error counting visitors:", error);
+      }
+    };
+
+    countVisitors();
+  }, []);
 
   useEffect(() => {
     const fetchVisitCounts = async () => {
@@ -143,7 +159,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
+                data={visitorCount}
                 title="Jumlah Kunjungan Hari Ini"
               />
               <CardDashboard
