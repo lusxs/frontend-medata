@@ -20,8 +20,21 @@ const Statistics = () => {
     }
   };
   useEffect(() => {
-    const generate = generateWeeklyData();
-    setLabelWeekly(generate);
+    const fetchData = async () => {
+      try {
+        const response = await generateWeeklyDataWithCounts();
+        console.log("API Response:", response); // Add this line to log the response
+        const labels = response.map((data) => data.formattedDate);
+        const counts = response.map((data) => data.count);
+
+        setLabelWeekly(labels);
+        setChartDataWeekly(counts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
     fetchDivisions();
   }, []);
 

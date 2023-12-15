@@ -230,7 +230,7 @@ const Purposes = () => {
                             setPurposeId(item.id);
                             setIsOpenModalUpdate(true);
                           }}
-                          title="Datail"
+                          title="Edit"
                         >
                           <MdEditNote className="large-icon" />
                         </button>

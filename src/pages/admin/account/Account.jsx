@@ -3,6 +3,8 @@ import DefaultLayout from "../../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
+import { MdEditNote } from "react-icons/md";
+import ModalUpdateAccount from "../../../components/common/modal/ModalUpdateAccount";
 import { Link } from "react-router-dom";
 
 const Account = () => {
@@ -14,6 +16,8 @@ const Account = () => {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState("");
 
   const fetchUsers = async () => {
     try {
@@ -48,6 +52,12 @@ const Account = () => {
       console.error("Error updating isActive:", error);
     }
   };
+
+  const handleUpdateClick = (userId) => {
+    setIsOpenModalUpdate(true);
+    setSelectedUserId(userId);
+  };
+
   useEffect(() => {
     fetchUsers();
   }, [page, keyword]);
@@ -214,18 +224,18 @@ const Account = () => {
                     : ""}
                 </td>
                 <td className="flex items-center justify-center px-6 py-4 space-x-4 uppercase">
-                  {/* <div className="text-center">
-                    <Toggle
-                      checked={item.isActive}
-                      onToggle={() => handleToggleChange(item.uuid)}
-                    />
-                  </div> */}
-                  {/* <Link
-                    to={`/user/detail/${item.uuid}`}
-                    className="btn-secondary"
-                  >
-                    Detail
-                  </Link> */}
+                  <div>
+                    <button
+                      className="btn-secondary"
+                      onClick={() => {
+                        setSelectedUserId(item.uuid);
+                        setIsOpenModalUpdate(true);
+                      }}
+                      title="Edit"
+                    >
+                      <MdEditNote className="large-icon" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -262,6 +272,13 @@ const Account = () => {
           </nav>
         </div>
       </div>
+      {isOpenModalUpdate && (
+        <ModalUpdateAccount
+          setIsOpenModalUpdate={() => setIsOpenModalUpdate(false)}
+          userId={selectedUserId}
+          updateTable={fetchUsers}
+        />
+      )}
     </DefaultLayout>
   );
 };
