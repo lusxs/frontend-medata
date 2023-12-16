@@ -8,19 +8,38 @@ import ReportDataVisitors from "../../components/common/pdf/Report";
 import ToastError from "../../components/common/toast/ToastError";
 import ToastLoading from "../../components/common/toast/ToastLoading";
 import { parseAndFormatDateString } from "../../utils/helper";
+import { STATUS } from "../../utils/constanta";
 
 const Visitors = () => {
   const [data, setData] = useState([]);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [notCompletedCount, setNotCompletedCount] = useState(0);
+  const [canceledCount, setCanceledCount] = useState(0);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `http://localhost:5000/reports?startDate=${startDate}&endDate=${endDate}`
       );
+
+      const filteredData = response.data.result;
+
+      setCompletedCount(
+        filteredData.filter((item) => item.status === STATUS.COMPLETED).length
+      );
+
+      setNotCompletedCount(
+        filteredData.filter((item) => item.status === STATUS.NOT_COMPLETED)
+          .length
+      );
+
+      setCanceledCount(
+        filteredData.filter((item) => item.status === STATUS.CANCELED).length
+      );
+
       setData(response.data.result);
-      console.log(response.data.result);
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +84,14 @@ const Visitors = () => {
           />
         </div>
         <PDFDownloadLink
-          document={<ReportDataVisitors data={data} />}
+          document={
+            <ReportDataVisitors
+              completedCount={completedCount}
+              canceledCount={canceledCount}
+              notCompletedCount={notCompletedCount}
+              data={data}
+            />
+          }
           fileName="table.pdf"
           className="btn-primary"
         >

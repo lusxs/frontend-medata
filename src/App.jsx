@@ -28,6 +28,14 @@ function App() {
     <>
       <Router>
         <Routes>
+          {/* <Route
+            path="/"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Form />
+              </Suspense>
+            }
+          /> */}
           <Route
             path="/"
             element={

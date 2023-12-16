@@ -2,35 +2,44 @@ import { useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import LineChart from "../../components/common/chart/LineChart";
 import axios from "axios";
+import { generateWeeklyData } from "../../utils/helper";
 
 const Statistics = () => {
-  const [divisions, setDivisons] = useState([]);
+  const [divisions, setDivisions] = useState([]);
   const [divisionId, setDivisionId] = useState(2);
+  const [labelWeekly, setLabelWeekly] = useState([]);
+  const [chartDataWeekly, setChartDataWeekly] = useState([]);
 
   const fetchDivisions = async () => {
     try {
       const response = await axios.get("http://localhost:5000/divisions");
       console.log(response.data);
-      setDivisons(response.data.result);
+      setDivisions(response.data.result); // Corrected typo here
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await generateWeeklyDataWithCounts();
+        console.log("API Response:", response); // Add this line to log the response
+        const labels = response.map((data) => data.formattedDate);
+        const counts = response.map((data) => data.count);
+
+        setLabelWeekly(labels);
+        setChartDataWeekly(counts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
     fetchDivisions();
   }, []);
+
   const chartData = [1, 2, 3, 5];
   const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
-  const chartDataWeekly = [0, 20, 30, 40, 50, 60, 70, 80];
-  const labelWeekly = [
-    "30 November",
-    "1 Desember",
-    "4 Desember",
-    "5 Desember",
-    "6 Desember",
-    "7 Desember",
-    "8 Desember",
-  ];
   const chartDataMonthly = [0, 50, 100, 150, 200];
   const labelMonthly = ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"];
   const chartDataHexaly = [0, 200, 300, 400, 500, 600, 700];

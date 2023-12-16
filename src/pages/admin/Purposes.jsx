@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import Toggle from "../../components/common/toggle/Toggle";
 import { MdEditNote } from "react-icons/md";
 import ModalAddPurpose from "../../components/common/modal/ModalAddPurpose";
+import { generateWeeklyData } from "../../utils/helper";
 
 const Purposes = () => {
   const [data, setData] = useState([]);
@@ -22,6 +23,8 @@ const Purposes = () => {
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
   const [hiddenPurposes, setHiddenPurposes] = useState([]);
+  const [days, setDays] = useState([]);
+  const [countDays, setCountDays] = useState([]);
 
   const fetchPurposes = async () => {
     try {
@@ -81,6 +84,19 @@ const Purposes = () => {
     setKeyword(query);
   };
 
+  const fetchDataDaily = () => {
+    try {
+      days.map(
+        async (day) =>
+          await axios(`http://localhost:5000/form/count/${day.date}`)
+      );
+    } catch (error) {}
+  };
+  useEffect(() => {
+    let generatedData = generateWeeklyData();
+    setDays(generatedData);
+  }, []);
+
   return (
     <DefaultLayout>
       {isOpenModalUpdate && (
@@ -90,56 +106,57 @@ const Purposes = () => {
           updateTable={updateTable}
         />
       )}
-      {isOpenModal && <ModalAddPurpose setIsOpenModal={setIsOpenModal} />}
+      {isOpenModal && (
+        <ModalAddPurpose
+          updateTable={updateTable}
+          setIsOpenModal={setIsOpenModal}
+        />
+      )}
       <h5 className="mt-6 mb-4 text-xl font-semibold">
         Data Kelola Maksud Tujuan
       </h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
         <div className="flex items-center justify-between mb-4">
-          {data.length !== 0 ? (
-            <>
-              <form onSubmit={searchData}>
-                <div className="flex">
-                  <label
-                    htmlFor="search"
-                    className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-                  >
-                    Cari
-                  </label>
+          <form onSubmit={searchData}>
+            <div className="flex">
+              <label
+                htmlFor="search"
+                className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+              >
+                Cari
+              </label>
 
-                  <div className="relative w-full">
-                    <input
-                      type="search"
-                      onChange={(e) => setQuery(e.target.value)}
-                      id="search"
-                      className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
-                      placeholder="Cari"
+              <div className="relative w-full">
+                <input
+                  type="search"
+                  onChange={(e) => setQuery(e.target.value)}
+                  id="search"
+                  className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
+                  placeholder="Cari"
+                />
+                <button
+                  type="submit"
+                  className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-primary-700 rounded-r-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 "
+                >
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                     />
-                    <button
-                      type="submit"
-                      className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-primary-700 rounded-r-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 "
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </>
-          ) : null}
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </form>
           <div>
             <button
               onClick={() => setIsOpenModal(true)}
@@ -213,7 +230,7 @@ const Purposes = () => {
                             setPurposeId(item.id);
                             setIsOpenModalUpdate(true);
                           }}
-                          title="Datail"
+                          title="Edit"
                         >
                           <MdEditNote className="large-icon" />
                         </button>

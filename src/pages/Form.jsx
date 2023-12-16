@@ -365,11 +365,13 @@ const Form = () => {
                       <option value="" disabled>
                         Silahkan Pilih Maksud Tujuan
                       </option>
-                      {purposes.map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.name}
-                        </option>
-                      ))}
+                      {purposes.map((item) =>
+                        item.isActive === true ? (
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        ) : null
+                      )}
                     </select>
                   </>
                 )}
