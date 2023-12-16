@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     justifyContent: "center",
     borderBottomWidth: 2,
-    marginBottom: 5,
   },
   logoContainer: {
     flexDirection: "row",

@@ -11,16 +11,15 @@ import { BsPersonFillCheck } from "react-icons/bs";
 import { BsPersonFillExclamation } from "react-icons/bs";
 import { BsPersonFillX } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
+import { getCurrentMonth, getLastSixMonths } from "../../utils/helper";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
-  const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
   const dispatch = useDispatch();
-  const [purposeData, setPurposeData] = useState([]);
   const navigate = useNavigate();
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
   const { isError, user } = useSelector((state) => state.auth);
-  const [visitorCount, setVisitorCount] = useState(0); // Add this line
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
@@ -46,50 +45,6 @@ const DashboardAdmin = () => {
 
     fetchPurposes();
   }, [total]);
-
-  useEffect(() => {
-    const countVisitors = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/visits/countDataVisitorToday"
-        );
-        setVisitorCount(response.data.result);
-      } catch (error) {
-        console.error("Error counting visitors:", error);
-      }
-    };
-
-    countVisitors();
-  }, []);
-
-  useEffect(() => {
-    const fetchVisitCounts = async () => {
-      const purposeDataWithVisitCounts = await Promise.all(
-        data.map(async (item) => {
-          try {
-            const response = await axios.get(
-              `http://localhost:5000/visits/count?purposeId=${item.id}`
-            );
-            const visitCount = response.data.visitCount;
-            return {
-              ...item,
-              visitCount,
-            };
-          } catch (error) {
-            console.error(
-              `Error fetching visit count for purpose ${item.id}:`,
-              error
-            );
-            return item;
-          }
-        })
-      );
-      setPurposeData(purposeDataWithVisitCounts);
-    };
-
-    fetchVisitCounts();
-  }, [data]);
-
   return (
     <DefaultLayout>
       <div className="items-center px-4 py-8 m-auto">
@@ -159,7 +114,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={visitorCount}
+                data={0}
                 title="Jumlah Kunjungan Hari Ini"
               />
               <CardDashboard

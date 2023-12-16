@@ -2,10 +2,17 @@ import { useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import LineChart from "../../components/common/chart/LineChart";
 import axios from "axios";
-import { generateWeeklyData } from "../../utils/helper";
+import {
+  getCurrentMonth,
+  getLastSixMonths,
+  generateWeeklyData,
+} from "../../utils/helper";
 
 const Statistics = () => {
   const [divisions, setDivisions] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+  const [weekday, setWeekday] = useState(generateWeeklyData());
+  const [lastSixMonths, setLastSixMonths] = useState(getLastSixMonths());
   const [divisionId, setDivisionId] = useState(2);
   const [labelWeekly, setLabelWeekly] = useState([]);
   const [chartDataWeekly, setChartDataWeekly] = useState([]);
@@ -19,38 +26,9 @@ const Statistics = () => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await generateWeeklyDataWithCounts();
-        console.log("API Response:", response); // Add this line to log the response
-        const labels = response.map((data) => data.formattedDate);
-        const counts = response.map((data) => data.count);
-
-        setLabelWeekly(labels);
-        setChartDataWeekly(counts);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-    fetchDivisions();
-  }, []);
-
-  const chartData = [1, 2, 3, 5];
-  const label = ["Label 1", "Label 2", "Label 3", "Label 4", "Label 5"];
   const chartDataMonthly = [0, 50, 100, 150, 200];
   const labelMonthly = ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"];
   const chartDataHexaly = [0, 200, 300, 400, 500, 600, 700];
-  const labelHexaly = [
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
   const chartDataYearly = [0, 1000, 2000, 3000, 4000, 5000, 6000];
   const labelYearly = [
     "Januari",
@@ -92,19 +70,19 @@ const Statistics = () => {
       <div className="grid grid-cols-2 gap-4">
         <LineChart
           data={chartDataWeekly}
-          label={labelWeekly}
+          label={weekday.reverse()}
           title="7 Hari Terakhir"
           titleChart="Data Pengunjung"
         />
         <LineChart
           data={chartDataMonthly}
           label={labelMonthly}
-          title="Desember"
+          title={currentMonth}
           titleChart="Data Pengunjung"
         />
         <LineChart
           data={chartDataHexaly}
-          label={labelHexaly}
+          label={lastSixMonths.reverse()}
           title="6 Bulan Terakhir"
           titleChart="Data Pengunjung"
         />

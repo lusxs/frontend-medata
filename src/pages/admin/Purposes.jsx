@@ -210,10 +210,10 @@ const Purposes = () => {
                     >
                       {index + 1 + page * limit}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.name}
                     </td>
-                    <td className="text-center px-6 py-4 uppercase">
+                    <td className="px-6 py-4 text-center uppercase">
                       {item.division.name}
                     </td>
                     <td className="flex items-center justify-center space-x-2">
