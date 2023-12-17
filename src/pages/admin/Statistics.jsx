@@ -17,11 +17,19 @@ const Statistics = () => {
   const [labelWeekly, setLabelWeekly] = useState([]);
   const [chartDataWeekly, setChartDataWeekly] = useState([]);
 
+  const fetchDataWeekly = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/count");
+      const data = response.data;
+      const countArray = data.map((item) => item.count);
+      setChartDataWeekly(countArray.reverse());
+    } catch (error) {}
+  };
   const fetchDivisions = async () => {
     try {
       const response = await axios.get("http://localhost:5000/divisions");
       console.log(response.data);
-      setDivisions(response.data.result); // Corrected typo here
+      setDivisions(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -45,6 +53,9 @@ const Statistics = () => {
     "Desember",
   ];
 
+  useEffect(() => {
+    fetchDataWeekly();
+  }, []);
   return (
     <DefaultLayout>
       <form className="my-4">
@@ -72,18 +83,6 @@ const Statistics = () => {
           data={chartDataWeekly}
           label={weekday.reverse()}
           title="7 Hari Terakhir"
-          titleChart="Data Pengunjung"
-        />
-        <LineChart
-          data={chartDataMonthly}
-          label={labelMonthly}
-          title={currentMonth}
-          titleChart="Data Pengunjung"
-        />
-        <LineChart
-          data={chartDataHexaly}
-          label={lastSixMonths.reverse()}
-          title="6 Bulan Terakhir"
           titleChart="Data Pengunjung"
         />
         <LineChart
