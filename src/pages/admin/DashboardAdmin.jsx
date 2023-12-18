@@ -11,14 +11,24 @@ import { BsPersonFillCheck } from "react-icons/bs";
 import { BsPersonFillExclamation } from "react-icons/bs";
 import { BsPersonFillX } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
-import { getCurrentMonth, getLastSixMonths } from "../../utils/helper";
+import {
+  getCurrentMonth,
+  getLastSixMonths,
+  sumArray,
+} from "../../utils/helper";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [currentMonth, setCurrentMonth] = useState(getCurrentMonth());
+  const [countDataVisitorByDivision, setCountDataVisitorByDivision] = useState(
+    []
+  );
+  const [countDataVisitorByStatus, setCountDataVisitorByStatus] = useState([]);
+  const [countDataVisitorByPurpose, setCountDataVisitorByPurpose] = useState(
+    []
+  );
   const { isError, user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getMe());
@@ -30,6 +40,40 @@ const DashboardAdmin = () => {
     }
   }, [isError, navigate]);
 
+  const fetchCountDataVisitorByDivision = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/admin/count/data-visitor"
+      );
+      setCountDataVisitorByDivision(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCountDataVisitorByStatus = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/admin/count/data-visitor-status"
+      );
+      console.log(response.data.result);
+      setCountDataVisitorByStatus(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCountDataVisitorByPurpose = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/admin/count/data-visitor-purpose"
+      );
+      console.log(response.data.result);
+      setCountDataVisitorByPurpose(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     const fetchPurposes = async () => {
       try {
@@ -44,6 +88,9 @@ const DashboardAdmin = () => {
     };
 
     fetchPurposes();
+    fetchCountDataVisitorByDivision();
+    fetchCountDataVisitorByStatus();
+    fetchCountDataVisitorByPurpose();
   }, [total]);
   return (
     <DefaultLayout>
@@ -66,7 +113,18 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
+                data={countDataVisitorByDivision[1]}
+                title="Bidang Rehsos"
+              />
+              <CardDashboard
+                child={
+                  <>
+                    <div className="text-red-600">
+                      <HiBuildingOffice size={70} />
+                    </div>
+                  </>
+                }
+                data={countDataVisitorByDivision[2]}
                 title="Bidang PFM"
               />
               <CardDashboard
@@ -77,18 +135,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
-                title="Bidang PFM"
-              />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <HiBuildingOffice size={70} />
-                    </div>
-                  </>
-                }
-                data={`11`}
+                data={countDataVisitorByDivision[0]}
                 title="Bidang LINJAMSOS"
               />
             </>
@@ -114,7 +161,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={0}
+                data={sumArray(countDataVisitorByStatus)}
                 title="Jumlah Kunjungan Hari Ini"
               />
               <CardDashboard
@@ -125,7 +172,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
+                data={countDataVisitorByStatus[0]}
                 title="Jumlah Kunjungan Belum Selesai Proses"
               />
               <CardDashboard
@@ -136,7 +183,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
+                data={countDataVisitorByStatus[1]}
                 title="Jumlah Kunjungan Selesai Proses"
               />
               <CardDashboard
@@ -147,7 +194,7 @@ const DashboardAdmin = () => {
                     </div>
                   </>
                 }
-                data={`11`}
+                data={countDataVisitorByStatus[2]}
                 title="Jumlah Kunjungan Batal Proses"
               />
             </>
@@ -157,7 +204,7 @@ const DashboardAdmin = () => {
       <h3 className="text-2xl font-bold">Maksud Tujuan</h3>
       <div className="items-center px-4 py-8 m-auto">
         <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
-          {data.length === 0 ? (
+          {countDataVisitorByPurpose.length === 0 ? (
             <>
               <CardDashboardSkeleton />
               <CardDashboardSkeleton />
@@ -166,9 +213,9 @@ const DashboardAdmin = () => {
             </>
           ) : (
             <>
-              {data.map((item) => (
+              {countDataVisitorByPurpose.map((item, number) => (
                 <CardDashboard
-                  key={item.uuid}
+                  key={number + 1}
                   child={
                     <>
                       <div className="text-red-600">
@@ -176,8 +223,8 @@ const DashboardAdmin = () => {
                       </div>
                     </>
                   }
-                  data={item.visitCount}
-                  title={item.name}
+                  data={item.count}
+                  title={item.purpose}
                 />
               ))}
             </>

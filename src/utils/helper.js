@@ -118,3 +118,17 @@ export function generateSevenWeekdays() {
   // Return the array of 7 days of data
   return weekdayData;
 }
+
+export function sumArray(arr) {
+  // Ensure that arr is an array of numbers
+  if (!Array.isArray(arr) || arr.some(isNaN)) {
+    throw new Error("Input must be an array of numbers");
+  }
+
+  // Use reduce to calculate the sum
+  const sum = arr.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0);
+
+  return sum;
+}
