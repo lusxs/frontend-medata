@@ -11,11 +11,7 @@ import { BsPersonFillCheck } from "react-icons/bs";
 import { BsPersonFillExclamation } from "react-icons/bs";
 import { BsPersonFillX } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
-import {
-  getCurrentMonth,
-  getLastSixMonths,
-  sumArray,
-} from "../../utils/helper";
+import { sumArray } from "../../utils/helper";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
