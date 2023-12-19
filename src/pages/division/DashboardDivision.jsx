@@ -2,22 +2,25 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../../features/authSlice";
-import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import CardDashboard from "../../components/common/card/CardDashboard";
 import CardDashboardSkeleton from "../../components/common/card/CardDashboardSkeleton";
-import BarSkeleton from "../../components/common/skeleton/BarSkeleton";
-import LineChart from "../../components/common/chart/LineChart";
-import CircularProgressBar from "../../components/common/progressbar/CircularProgressBar";
+import DefaultLayout from "../../layout/DefaultLayout";
 import { HiMiniUsers } from "react-icons/hi2";
+import { BsPersonFillCheck } from "react-icons/bs";
+import { BsPersonFillExclamation } from "react-icons/bs";
+import { BsPersonFillX } from "react-icons/bs";
+import { TbWorld } from "react-icons/tb";
+import { sumArray } from "../../utils/helper";
 
-const DashboardDivision = () => {
-  const [data, setData] = useState([]);
+const DashboardAdmin = () => {
   const [total, setTotal] = useState(0);
-  const [isOpenModalUpdate, setIsOpenModalUpdate] = useState(false);
   const dispatch = useDispatch();
-  const chartData = [1, 2, 3, 5];
   const navigate = useNavigate();
+  const [countDataVisitorByStatus, setCountDataVisitorByStatus] = useState([]);
+  const [countDataVisitorByPurpose, setCountDataVisitorByPurpose] = useState(
+    []
+  );
   const { isError, user } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(getMe());
@@ -29,27 +32,38 @@ const DashboardDivision = () => {
     }
   }, [isError, navigate]);
 
+  const fetchCountDataVisitorByStatus = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/division/count/data-visitor-status"
+      );
+      console.log(response.data.result);
+      setCountDataVisitorByStatus(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCountDataVisitorByPurpose = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/division/count/data-visitor-purpose"
+      );
+      console.log(response.data.result);
+      setCountDataVisitorByPurpose(response.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchPurposes = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/purposes?limit=${total}`
-        );
-        setData(response.data.result);
-        setTotal(response.data.total);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchPurposes();
+    fetchCountDataVisitorByStatus();
+    fetchCountDataVisitorByPurpose();
   }, [total]);
-
   return (
     <DefaultLayout>
       <div className="items-center px-4 py-8 m-auto">
         <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
-          {data.length === 0 ? (
+          {countDataVisitorByStatus?.length === 0 ? (
             <>
               <CardDashboardSkeleton />
               <CardDashboardSkeleton />
@@ -66,40 +80,40 @@ const DashboardDivision = () => {
                     </div>
                   </>
                 }
-                data={`7/14`}
+                data={sumArray(countDataVisitorByStatus)}
                 title="Jumlah Kunjungan Hari Ini"
               />
               <CardDashboard
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillExclamation size={70} />
                     </div>
                   </>
                 }
-                data={`7/14`}
+                data={countDataVisitorByStatus[0]}
                 title="Jumlah Kunjungan Belum Selesai Proses"
               />
               <CardDashboard
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillCheck size={70} />
                     </div>
                   </>
                 }
-                data={`7/14`}
+                data={countDataVisitorByStatus[1]}
                 title="Jumlah Kunjungan Selesai Proses"
               />
               <CardDashboard
                 child={
                   <>
                     <div className="text-red-600">
-                      <HiMiniUsers size={70} />
+                      <BsPersonFillX size={70} />
                     </div>
                   </>
                 }
-                data={`7/14`}
+                data={countDataVisitorByStatus[2]}
                 title="Jumlah Kunjungan Batal Proses"
               />
             </>
@@ -109,7 +123,7 @@ const DashboardDivision = () => {
       <h3 className="text-2xl font-bold">Maksud Tujuan</h3>
       <div className="items-center px-4 py-8 m-auto">
         <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
-          {data.length === 0 ? (
+          {countDataVisitorByPurpose.length === 0 ? (
             <>
               <CardDashboardSkeleton />
               <CardDashboardSkeleton />
@@ -118,26 +132,26 @@ const DashboardDivision = () => {
             </>
           ) : (
             <>
-              {data.map((item) => (
+              {countDataVisitorByPurpose.map((item, number) => (
                 <CardDashboard
-                  key={item.uuid}
+                  key={number + 1}
                   child={
                     <>
-                      <CircularProgressBar percentage={50} />
+                      <div className="text-red-600">
+                        <TbWorld size={70} />
+                      </div>
                     </>
                   }
-                  data={`7/14`}
-                  title={item.name}
+                  data={item.count}
+                  title={item.purpose}
                 />
               ))}
             </>
           )}
         </div>
       </div>
-
-      <BarSkeleton count={10} />
     </DefaultLayout>
   );
 };
 
-export default DashboardDivision;
+export default DashboardAdmin;
