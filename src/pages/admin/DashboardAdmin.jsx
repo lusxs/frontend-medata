@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getMe } from "../../features/authSlice";
@@ -7,10 +7,13 @@ import CardDashboard from "../../components/common/card/CardDashboard";
 import CardDashboardSkeleton from "../../components/common/card/CardDashboardSkeleton";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { HiMiniUsers, HiBuildingOffice } from "react-icons/hi2";
-import { BsPersonFillCheck } from "react-icons/bs";
-import { BsPersonFillExclamation } from "react-icons/bs";
-import { BsPersonFillX } from "react-icons/bs";
+import {
+  BsPersonFillCheck,
+  BsPersonFillExclamation,
+  BsPersonFillX,
+} from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
+
 import { sumArray } from "../../utils/helper";
 
 const DashboardAdmin = () => {
@@ -25,7 +28,8 @@ const DashboardAdmin = () => {
   const [countDataVisitorByPurpose, setCountDataVisitorByPurpose] = useState(
     []
   );
-  const { isError, user } = useSelector((state) => state.auth);
+  const { isError } = useSelector((state) => state.auth);
+
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
@@ -36,40 +40,38 @@ const DashboardAdmin = () => {
     }
   }, [isError, navigate]);
 
-  const fetchCountDataVisitorByDivision = async () => {
+  const fetchData = async (url, setDataFunction) => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/admin/count/data-visitor"
-      );
-      setCountDataVisitorByDivision(response.data.result);
+      const response = await axios.get(url);
+      setDataFunction(response.data.result);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchCountDataVisitorByStatus = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/admin/count/data-visitor-status"
-      );
-      console.log(response.data.result);
-      setCountDataVisitorByStatus(response.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const fetchCountDataVisitorByDivision = () =>
+    fetchData(
+      "http://localhost:5000/admin/count/data-visitor",
+      setCountDataVisitorByDivision
+    );
 
-  const fetchCountDataVisitorByPurpose = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:5000/admin/count/data-visitor-purpose"
-      );
-      console.log(response.data.result);
-      setCountDataVisitorByPurpose(response.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const fetchCountDataVisitorByStatus = () =>
+    fetchData(
+      "http://localhost:5000/admin/count/data-visitor-status",
+      setCountDataVisitorByStatus
+    );
+
+  const fetchCountDataVisitorByPurpose = () =>
+    fetchData(
+      "http://localhost:5000/admin/count/data-visitor-purpose",
+      (response) => {
+        const data = response.sort((a, b) =>
+          a.division.localeCompare(b.division)
+        );
+        setCountDataVisitorByPurpose(data);
+      }
+    );
+
   useEffect(() => {
     const fetchPurposes = async () => {
       try {
@@ -88,145 +90,117 @@ const DashboardAdmin = () => {
     fetchCountDataVisitorByStatus();
     fetchCountDataVisitorByPurpose();
   }, [total]);
-  return (
-    <DefaultLayout>
+
+  const renderPurposeCards = (division) => {
+    const filteredData = countDataVisitorByPurpose.filter(
+      (item) => item.division === division
+    );
+    return (
       <div className="items-center px-4 py-8 m-auto">
-        <div className="grid grid-cols-1 pb-3 bg-white divide-y rounded-sm shadow-lg md:grid-cols-3 xl:divide-x xl:divide-y-0">
-          {data.length === 0 ? (
-            <>
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-            </>
-          ) : (
-            <>
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <HiBuildingOffice size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByDivision[1]}
-                title="Bidang Rehsos"
-              />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <HiBuildingOffice size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByDivision[2]}
-                title="Bidang PFM"
-              />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <HiBuildingOffice size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByDivision[0]}
-                title="Bidang LINJAMSOS"
-              />
-            </>
-          )}
+        <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
+          {countDataVisitorByPurpose.length === 0
+            ? Array(4)
+                .fill()
+                .map((_, index) => <CardDashboardSkeleton key={index} />)
+            : filteredData.map((item, number) => (
+                <React.Fragment key={number + 1}>
+                  <CardDashboard
+                    child={
+                      <div className="text-red-600">
+                        <TbWorld size={70} />
+                      </div>
+                    }
+                    data={item.count}
+                    title={item.purpose}
+                  />
+                </React.Fragment>
+              ))}
         </div>
       </div>
+    );
+  };
+
+  return (
+    <DefaultLayout>
+      {/* Division Cards */}
+      <div className="items-center px-4 py-8 m-auto">
+        <div className="grid grid-cols-1 pb-3 bg-white divide-y rounded-sm shadow-lg md:grid-cols-3 xl:divide-x xl:divide-y-0">
+          {data.length === 0
+            ? Array(4)
+                .fill()
+                .map((_, index) => <CardDashboardSkeleton key={index} />)
+            : countDataVisitorByDivision.map((divisionData, index) => (
+                <CardDashboard
+                  key={index}
+                  child={
+                    <div className="text-red-600">
+                      <HiBuildingOffice size={70} />
+                    </div>
+                  }
+                  data={divisionData}
+                  title={`Bidang ${divisionData.division}`}
+                />
+              ))}
+        </div>
+      </div>
+
+      {/* Status Cards */}
       <div className="items-center px-4 py-8 m-auto">
         <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
           {data.length === 0 ? (
-            <>
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-            </>
+            Array(4)
+              .fill()
+              .map((_, index) => <CardDashboardSkeleton key={index} />)
           ) : (
             <>
               <CardDashboard
                 child={
-                  <>
-                    <div className="text-red-600">
-                      <HiMiniUsers size={70} />
-                    </div>
-                  </>
+                  <div className="text-red-600">
+                    <HiMiniUsers size={70} />
+                  </div>
                 }
                 data={sumArray(countDataVisitorByStatus)}
                 title="Jumlah Kunjungan Hari Ini"
               />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <BsPersonFillExclamation size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByStatus[0]}
-                title="Jumlah Kunjungan Belum Selesai Proses"
-              />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <BsPersonFillCheck size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByStatus[1]}
-                title="Jumlah Kunjungan Selesai Proses"
-              />
-              <CardDashboard
-                child={
-                  <>
-                    <div className="text-red-600">
-                      <BsPersonFillX size={70} />
-                    </div>
-                  </>
-                }
-                data={countDataVisitorByStatus[2]}
-                title="Jumlah Kunjungan Batal Proses"
-              />
-            </>
-          )}
-        </div>
-      </div>
-      <h3 className="text-2xl font-bold">Maksud Tujuan</h3>
-      <div className="items-center px-4 py-8 m-auto">
-        <div className="flex flex-wrap pb-3 bg-white divide-y rounded-sm shadow-lg xl:divide-x xl:divide-y-0">
-          {countDataVisitorByPurpose.length === 0 ? (
-            <>
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-              <CardDashboardSkeleton />
-            </>
-          ) : (
-            <>
-              {countDataVisitorByPurpose.map((item, number) => (
+              {countDataVisitorByStatus.map((statusData, index) => (
                 <CardDashboard
-                  key={number + 1}
+                  key={index}
                   child={
-                    <>
-                      <div className="text-red-600">
-                        <TbWorld size={70} />
-                      </div>
-                    </>
+                    <div className="text-red-600">
+                      {index === 0 ? (
+                        <BsPersonFillExclamation size={70} />
+                      ) : index === 1 ? (
+                        <BsPersonFillCheck size={70} />
+                      ) : (
+                        <BsPersonFillX size={70} />
+                      )}
+                    </div>
                   }
-                  data={item.count}
-                  title={item.purpose}
+                  data={statusData}
+                  title={`Jumlah Kunjungan ${
+                    index === 0
+                      ? "Belum Selesai Proses"
+                      : index === 1
+                      ? "Selesai Proses"
+                      : "Batal Proses"
+                  }`}
                 />
               ))}
             </>
           )}
         </div>
       </div>
+
+      {/* Purpose Cards */}
+      <h3 className="text-2xl font-bold">Maksud Tujuan</h3>
+      <h4 className="mt-4 text-xl font-bold">PFM</h4>
+      {renderPurposeCards("PFM")}
+
+      <h4 className="text-xl font-bold">REHSOS</h4>
+      {renderPurposeCards("REHSOS")}
+
+      <h4 className="text-xl font-bold">LINJAMSOS</h4>
+      {renderPurposeCards("LINJAMSOS")}
     </DefaultLayout>
   );
 };

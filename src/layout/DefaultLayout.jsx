@@ -144,7 +144,6 @@ const DefaultLayout = ({ children }) => {
           {menus?.map((menu, i) => (
             <div key={i}>
               {menu.submenus ? (
-                // Render parent menu with submenus
                 <div className="group">
                   <div
                     className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 ${
