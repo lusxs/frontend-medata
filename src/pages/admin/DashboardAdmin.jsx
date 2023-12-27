@@ -13,8 +13,8 @@ import {
   BsPersonFillX,
 } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
-
 import { sumArray } from "../../utils/helper";
+import { DIVISION } from "../../utils/constanta";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
@@ -43,6 +43,7 @@ const DashboardAdmin = () => {
   const fetchData = async (url, setDataFunction) => {
     try {
       const response = await axios.get(url);
+      console.log(response.data.result);
       setDataFunction(response.data.result);
     } catch (error) {
       console.log(error);
@@ -125,22 +126,41 @@ const DashboardAdmin = () => {
       {/* Division Cards */}
       <div className="items-center px-4 py-8 m-auto">
         <div className="grid grid-cols-1 pb-3 bg-white divide-y rounded-sm shadow-lg md:grid-cols-3 xl:divide-x xl:divide-y-0">
-          {data.length === 0
-            ? Array(4)
-                .fill()
-                .map((_, index) => <CardDashboardSkeleton key={index} />)
-            : countDataVisitorByDivision.map((divisionData, index) => (
-                <CardDashboard
-                  key={index}
-                  child={
-                    <div className="text-red-600">
-                      <HiBuildingOffice size={70} />
-                    </div>
-                  }
-                  data={divisionData}
-                  title={`Bidang ${divisionData.division}`}
-                />
-              ))}
+          {data.length === 0 ? (
+            Array(4)
+              .fill()
+              .map((_, index) => <CardDashboardSkeleton key={index} />)
+          ) : (
+            <>
+              <CardDashboard
+                child={
+                  <div className="text-red-600">
+                    <HiBuildingOffice size={70} />
+                  </div>
+                }
+                data={countDataVisitorByDivision[0] || 0}
+                title={`Bidang LINJAMSOS`}
+              />
+              <CardDashboard
+                child={
+                  <div className="text-red-600">
+                    <HiBuildingOffice size={70} />
+                  </div>
+                }
+                data={countDataVisitorByDivision[1] || 0}
+                title={`Bidang REHSOS`}
+              />
+              <CardDashboard
+                child={
+                  <div className="text-red-600">
+                    <HiBuildingOffice size={70} />
+                  </div>
+                }
+                data={countDataVisitorByDivision[2] || 0}
+                title={`Bidang PFM`}
+              />
+            </>
+          )}
         </div>
       </div>
 
