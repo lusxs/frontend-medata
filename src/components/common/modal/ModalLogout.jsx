@@ -26,7 +26,7 @@ const ModalLogout = ({ isOpen, onClose, logout }) => {
 };
 
 ModalLogout.propTypes = {
-  isOpen: PropTypes.func,
+  isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   logout: PropTypes.func,
 };

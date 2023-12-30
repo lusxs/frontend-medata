@@ -40,6 +40,7 @@ const DefaultLayout = ({ children }) => {
   const [isModalLogout, setIsModalLogout] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
@@ -125,7 +126,7 @@ const DefaultLayout = ({ children }) => {
     <section className="flex h-screen overflow-hidden ">
       <div
         className={`bg-white min-h-screen ${
-          open ? "w-72" : "w-16"
+          open ? "w-72" : "w-28"
         } duration-500 text-gray-500 box__shadow z-index-top px-4`}
       >
         <div className="flex items-center justify-between">
@@ -144,32 +145,57 @@ const DefaultLayout = ({ children }) => {
           {menus?.map((menu, i) => (
             <div key={i}>
               {menu.submenus ? (
-                <div className="group">
+                <div className="">
                   <div
-                    className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 ${
+                    className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 cursor-pointer ${
                       location.pathname.startsWith(menu.link)
-                        ? "active__navlink_sidebar"
+                        ? `active__navlink_sidebar  ${open && "border-r-4"}`
                         : ""
-                    }`}
+                    } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:border-r-4 `}
                   >
                     <div>{React.createElement(menu.icon, { size: "20" })}</div>
-                    <h2>{menu.name}</h2>
+                    <h2
+                      style={{
+                        transitionDelay: `${i + 3}00ms`,
+                      }}
+                      className={`whitespace-pre duration-500 ${
+                        !open && "opacity-0 translate-x-28 overflow-hidden"
+                      }`}
+                    >
+                      {menu.name}
+                    </h2>
                   </div>
-                  <div className="ml-6">
+                  <div className={`ml-6 `}>
                     {menu.submenus.map((submenu, j) => (
                       <NavLink
                         to={submenu.link}
                         key={j}
-                        className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 ${
+                        className={`group flex items-center text-sm gap-3.5 font-medium p-2 hover:border-r-4 sub-menu ${
                           location.pathname === submenu.link
-                            ? "active__navlink_sidebar sub-menu"
-                            : "sub-menu"
-                        }`}
+                            ? `active__navlink_sidebar  ${open && "border-r-4"}`
+                            : ""
+                        } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:border-r-4`}
                       >
                         <div>
                           {React.createElement(submenu.icon, { size: "20" })}
                         </div>
-                        <h2>{submenu.name}</h2>
+                        <h2
+                          style={{
+                            transitionDelay: `${i + 3}00ms`,
+                          }}
+                          className={`whitespace-pre duration-500 ${
+                            !open && "opacity-0 translate-x-28 overflow-hidden"
+                          }`}
+                        >
+                          {submenu.name}
+                        </h2>
+                        <h2
+                          className={`${
+                            open && "hidden"
+                          } absolute left-48 bg-white font-semibold whitespace-pre text-gray-900 rounded-md drop-shadow-lg px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit  `}
+                        >
+                          {submenu?.name}
+                        </h2>
                       </NavLink>
                     ))}
                   </div>
@@ -207,16 +233,15 @@ const DefaultLayout = ({ children }) => {
           ))}
           <button
             onClick={() => openModal()}
-            className="flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-red-600 rounded-md hover:text-white"
+            className="group flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-red-600 rounded-md hover:text-white"
           >
             <div>{React.createElement(MdLogout, { size: "20" })}</div>
             <span
               style={{
-                transitionDelay: `${100 + 3}00ms`,
+                transitionDelay: `300ms`,
               }}
               className={`whitespace-pre duration-500 ${
-                !open &&
-                "opacity-0 translate-x-28 text-white overflow-hidden hover:text-white"
+                !open && "opacity-0 translate-x-28 overflow-hidden"
               }`}
             >
               Keluar

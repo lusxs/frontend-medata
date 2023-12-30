@@ -14,7 +14,6 @@ import {
 } from "react-icons/bs";
 import { TbWorld } from "react-icons/tb";
 import { sumArray } from "../../utils/helper";
-import { DIVISION } from "../../utils/constanta";
 
 const DashboardAdmin = () => {
   const [data, setData] = useState([]);
