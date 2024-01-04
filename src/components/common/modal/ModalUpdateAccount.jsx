@@ -55,12 +55,15 @@ const ModalUpdateAccount = ({ setIsOpenModalUpdate, userId, updateTable }) => {
         <div className="fixed inset-0 bg-black opacity-50"></div>
         <div className="absolute flex flex-col ">
           <div className="p-10 bg-white rounded-xl">
-            <div className="flex justify-end text-red-500">
-              <HiOutlineXCircle
-                size={40}
-                className="cursor-pointer"
-                onClick={() => setIsOpenModalUpdate()}
-              />
+            <div className="flex justify-between items-center">
+              <h2 className="text-base font-light">Perbaharui Data Akun</h2>
+              <div className="flex justify-end text-red-500">
+                <HiOutlineXCircle
+                  size={40}
+                  className="cursor-pointer"
+                  onClick={() => setIsOpenModalUpdate()}
+                />
+              </div>
             </div>
             <div>
               <form onSubmit={updateAccount}>

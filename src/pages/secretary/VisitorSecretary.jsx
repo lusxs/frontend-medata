@@ -2,13 +2,11 @@ import { useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
-import { BiSolidUserDetail } from "react-icons/bi";
 import { parseAndFormatDateString } from "../../utils/helper";
-import { Link } from "react-router-dom";
 import Pagination from "../../components/common/pagination/Pagination";
 import ToastError from "../../components/common/toast/ToastError";
 
-const VisitorsCanceled = () => {
+const Visitors = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const limit = 5;
@@ -17,7 +15,7 @@ const VisitorsCanceled = () => {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
-  const status = "CANCELED";
+  const status = "";
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -27,7 +25,6 @@ const VisitorsCanceled = () => {
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
       setData(response.data.result);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -56,50 +53,52 @@ const VisitorsCanceled = () => {
   return (
     <DefaultLayout>
       {message && <ToastError message={message} />}
-      <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan Batal</h5>
+      <h5 className="mt-6 mb-4 text-xl font-semibold">Data Kunjungan</h5>
       <div className="relative p-4 mb-10 overflow-x-auto shadow-md sm:rounded-lg">
-        <div className="flex items-center justify-end mb-4">
-          <form onSubmit={searchData}>
-            <div className="flex">
-              <label
-                htmlFor="search"
-                className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-              >
-                Cari
-              </label>
-
-              <div className="relative w-full">
-                <input
-                  type="search"
-                  onChange={(e) => setQuery(e.target.value)}
-                  id="search"
-                  className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
-                  placeholder="Cari"
-                />
-                <button
-                  type="submit"
-                  className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-primary-700 rounded-r-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 "
+        <>
+          <div className="flex items-center justify-end mb-4">
+            <form onSubmit={searchData}>
+              <div className="flex">
+                <label
+                  htmlFor="search"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
-                  <svg
-                    className="w-4 h-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
+                  Cari
+                </label>
+
+                <div className="relative w-full">
+                  <input
+                    type="search"
+                    onChange={(e) => setQuery(e.target.value)}
+                    id="search"
+                    className="block p-2.5 w-96 rounded-l-lg z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg  border-2 border-gray-300 focus:ring-primary-500 focus:border-primary-500 "
+                    placeholder="Cari"
+                  />
+                  <button
+                    type="submit"
+                    className="absolute top-0 right-0 p-2.5 h-full text-sm font-medium text-white bg-primary-700 rounded-r-lg border border-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 "
                   >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      className="w-4 h-4"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </>
         {data.length !== 0 ? (
           <>
             <table className="w-full text-sm text-left text-gray-500 shadow-sm">
@@ -117,6 +116,27 @@ const VisitorsCanceled = () => {
                     <div className="flex items-center justify-center">Nama</div>
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">Umur</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">NIK</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">
+                      Nomor Kontak
+                    </div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">
+                      Pekerjaan
+                    </div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    <div className="flex items-center justify-center">
+                      Alamat
+                    </div>
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     <div className="flex items-center justify-center">
                       Maksud Tujuan
                     </div>
@@ -131,50 +151,53 @@ const VisitorsCanceled = () => {
                       Status
                     </div>
                   </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">Aksi</div>
-                  </th>
                 </tr>
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index} className="bg-white">
+                {data.map((item, number) => (
+                  <tr key={number} className="bg-white">
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                     >
-                      {index + 1 + page * limit}
+                      {number + 1}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
                       {parseAndFormatDateString(item.createdAt)}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.name}
+                      {item?.name}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.purpose.name}
+                      {item?.age}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.division.name}
+                      {item?.citizenNumber}
                     </td>
-                    {console.log(item.status)}
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.status === "CANCELED" ? "Batal Proses" : ""}
+                      {item?.phoneNumber}
                     </td>
-                    <td className="flex items-center justify-center px-6 py-4 space-x-2 uppercase">
-                      <Link
-                        to={`/visitor/detail/${item.id}`}
-                        className="btn-secondary"
-                        title="Detail"
-                      >
-                        <BiSolidUserDetail className="large-icon" />
-                      </Link>
+                    <td className="px-6 py-4 text-center uppercase">
+                      {item?.profession}
+                    </td>
+                    <td className="px-6 py-4 text-center uppercase">
+                      {item?.address}
+                    </td>
+                    <td className="px-6 py-4 text-center uppercase">
+                      {item?.purpose?.name}
+                    </td>
+                    <td className="px-6 py-4 text-center uppercase">
+                      {item?.division?.name}
+                    </td>
+                    <td className="px-6 py-4 text-center uppercase">
+                      {item?.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
+                      {item?.status === "COMPLETED" ? "Selesai" : ""}
+                      {item?.status === "CANCELED" ? "Batal Proses" : ""}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-
             <Pagination
               page={page}
               pages={pages}
@@ -186,7 +209,7 @@ const VisitorsCanceled = () => {
         ) : (
           <>
             <div className="p-4 shadow-md">
-              <p className="font-semibold text-center">Data Kosong</p>
+              <p className="font-semibold text-center">Kosong</p>
             </div>
           </>
         )}
@@ -195,4 +218,4 @@ const VisitorsCanceled = () => {
   );
 };
 
-export default VisitorsCanceled;
+export default Visitors;

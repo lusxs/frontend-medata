@@ -51,11 +51,14 @@ const ModalAddPurpose = ({ setIsOpenModal, updateTable }) => {
         <div className="fixed inset-0 bg-black opacity-50"></div>
         <div className="absolute flex flex-col ">
           <div className="p-10 bg-white rounded-xl">
-            <div
-              className="flex justify-end text-red-500 "
-              onClick={() => setIsOpenModal(false)}
-            >
-              <HiOutlineXCircle size={40} className="cursor-pointer" />
+            <div className="flex justify-between items-center">
+              <h2 className="text-base font-light">Tambah Maksud Tujuan</h2>
+              <div
+                className="flex justify-end text-red-500 "
+                onClick={() => setIsOpenModal(false)}
+              >
+                <HiOutlineXCircle size={40} className="cursor-pointer" />
+              </div>
             </div>
             <div>
               <form onSubmit={addPurpose}>
@@ -66,7 +69,7 @@ const ModalAddPurpose = ({ setIsOpenModal, updateTable }) => {
                   <input
                     type="text"
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Mauskan Maksud Tujuan"
+                    placeholder="Masukan Maksud Tujuan"
                     className="bg-gray-50 border mt-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-72 p-2.5"
                   />
                 </div>

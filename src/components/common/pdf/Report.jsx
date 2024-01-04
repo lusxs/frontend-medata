@@ -23,7 +23,7 @@ const Report = ({ data, completedCount, notCompletedCount, canceledCount }) => {
         <View style={styles.header}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={LogoMinahasa} />
-            <View style={styles.companyInfo}>
+            <View style={styles.HeaderContainer}>
               <Text style={styles.companyName}>
                 DINAS SOSIAL KABUPATEN MINAHASA
               </Text>
@@ -125,19 +125,23 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // Distribute space between the logos
     width: "100%", // Take the full width available
   },
+  HeaderContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center", // Distribute space between the logos
+    width: "100%", // Take the full width available
+  },
   companyName: {
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: "center",
     color: "#000000",
-    marginBottom: 4,
   },
   companyAddress: {
     fontSize: 12,
     fontWeight: "light",
-    textAlign: "center",
     color: "#000000",
-    marginBottom: 6,
+    marginTop: 2,
   },
   logo: {
     width: 45,
@@ -162,8 +166,8 @@ const styles = StyleSheet.create({
     display: "table",
     width: "auto",
     borderStyle: "solid",
-    borderWidth: 1, // Tambahkan borderWidth
-    borderColor: "#B4B4B4", // Tambahkan borderColor
+    borderWidth: 1,
+    borderColor: "#B4B4B4",
     borderRightWidth: 1,
     borderBottomWidth: 0,
     paddingBottom: 4,

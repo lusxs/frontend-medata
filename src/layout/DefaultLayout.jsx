@@ -28,7 +28,7 @@ const DefaultLayout = ({ children }) => {
       role = "Admin";
       break;
     case "secretary":
-      role = "Sekretaris";
+      role = "Sekertaris";
       break;
     default:
       role = user
@@ -52,7 +52,7 @@ const DefaultLayout = ({ children }) => {
   }, [isError, navigate]);
 
   const menus = [
-    { name: "Dashboard", link: "/dashboard", icon: MdOutlineDashboard },
+    { name: "Dasbor", link: "/dashboard", icon: MdOutlineDashboard },
     ...(isAdmin || isSecretary
       ? [{ name: "Statistik", link: "/statistics", icon: LuLineChart }]
       : []),
@@ -76,21 +76,25 @@ const DefaultLayout = ({ children }) => {
           link: "/visitors/all",
           icon: BsDatabase,
         },
-        {
-          name: "Belum Proses",
-          link: "/visitors/not-completed",
-          icon: BsDatabase,
-        },
-        {
-          name: "Batal Proses",
-          link: "/visitors/canceled",
-          icon: BsDatabaseDash,
-        },
-        {
-          name: "Selesai Proses",
-          link: "/visitors/completed",
-          icon: BsDatabaseCheck,
-        },
+        ...(isSecretary
+          ? []
+          : [
+              {
+                name: "Belum Proses",
+                link: "/visitors/not-completed",
+                icon: BsDatabase,
+              },
+              {
+                name: "Batal Proses",
+                link: "/visitors/canceled",
+                icon: BsDatabaseDash,
+              },
+              {
+                name: "Selesai Proses",
+                link: "/visitors/completed",
+                icon: BsDatabaseCheck,
+              },
+            ]),
       ],
     },
     ...(user && user.role !== "secretary"
@@ -258,8 +262,20 @@ const DefaultLayout = ({ children }) => {
       </div>
       <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
         <header className="sticky top-0 flex flex-col items-end w-full py-4 bg-white px-14 z-index drop-shadow-1 box__shadow">
-          <h3 className="font-bold">{user && user.name}</h3>
-          <p className="font-light">{user && role}</p>
+          <h3 className="font-normal">
+            {" "}
+            Selamat datang,{" "}
+            <span className="font-bold">
+              {user && user.name && user.name.toUpperCase()}
+            </span>
+          </h3>
+          <p className="font-light">
+            {" "}
+            Anda login sebagai,{" "}
+            <span className="font-bold">
+              {user && role && role.toUpperCase()}
+            </span>
+          </p>
         </header>
         <main className="h-screen p-4 md:p-6 2xl:p-10">{children}</main>
         {/* <footer className="sticky bottom-0 flex w-full p-4 bg-white z-index drop-shadow-1 box__shadow">

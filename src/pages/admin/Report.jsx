@@ -27,16 +27,16 @@ const Visitors = () => {
       const filteredData = response.data.result;
 
       setCompletedCount(
-        filteredData.filter((item) => item.status === STATUS.COMPLETED).length
+        filteredData.filter((item) => item?.status === STATUS.COMPLETED).length
       );
 
       setNotCompletedCount(
-        filteredData.filter((item) => item.status === STATUS.NOT_COMPLETED)
+        filteredData.filter((item) => item?.status === STATUS.NOT_COMPLETED)
           .length
       );
 
       setCanceledCount(
-        filteredData.filter((item) => item.status === STATUS.CANCELED).length
+        filteredData.filter((item) => item?.status === STATUS.CANCELED).length
       );
 
       setData(response.data.result);
@@ -57,7 +57,7 @@ const Visitors = () => {
     } else {
       return (
         <button className="btn" disabled={loading}>
-          Download PDF
+          Unduh PDF
         </button>
       );
     }
@@ -166,33 +166,33 @@ const Visitors = () => {
                       {parseAndFormatDateString(item.createdAt)}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.name}
+                      {item?.name}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.age}
+                      {item?.age}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.citizenNumber}
+                      {item?.citizenNumber}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.phoneNumber}
+                      {item?.phoneNumber}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.profession}
+                      {item?.profession}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.address}
+                      {item?.address}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.purpose.name}
+                      {item?.purpose?.name}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.division.name}
+                      {item?.division?.name}
                     </td>
                     <td className="px-6 py-4 text-center uppercase">
-                      {item.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
-                      {item.status === "COMPLETED" ? "Selesai" : ""}
-                      {item.status === "CANCELED" ? "Batal Proses" : ""}
+                      {item?.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
+                      {item?.status === "COMPLETED" ? "Selesai" : ""}
+                      {item?.status === "CANCELED" ? "Batal Proses" : ""}
                     </td>
                   </tr>
                 ))}
