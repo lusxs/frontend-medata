@@ -27,7 +27,6 @@ const VisitorsCanceled = () => {
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
       setData(response.data.result);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

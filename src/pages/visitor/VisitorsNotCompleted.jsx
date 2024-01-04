@@ -34,7 +34,7 @@ const VisitorsNotCompleted = () => {
       setPages(response.data.totalPage);
       setRows(response.data.totalRows);
       // Sort the data in reverse order based on timestamp or any other field
-      const sortedData = response.data.result.sort((a, b) => {
+      const sortedData = response?.data?.result.sort((a, b) => {
         // Assuming createdAt is the timestamp field, adjust this based on your data
         return new Date(b.createdAt) - new Date(a.createdAt);
       });

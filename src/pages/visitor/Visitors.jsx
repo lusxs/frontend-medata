@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMe } from "../../features/authSlice";
 import DefaultLayout from "../../layout/DefaultLayout";
 import axios from "axios";
 import { useEffect } from "react";
@@ -7,6 +9,7 @@ import Pagination from "../../components/common/pagination/Pagination";
 import ToastError from "../../components/common/toast/ToastError";
 
 const Visitors = () => {
+  const { user } = useSelector((state) => state.auth);
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const limit = 5;
@@ -16,6 +19,12 @@ const Visitors = () => {
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
   const status = "";
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -103,63 +112,178 @@ const Visitors = () => {
           <>
             <table className="w-full text-sm text-left text-gray-500 shadow-sm">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    No
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">
-                      Hari/Tanggal
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">Nama</div>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">
-                      Maksud Tujuan
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">
-                      Bidang
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    <div className="flex items-center justify-center">
-                      Status
-                    </div>
-                  </th>
-                </tr>
+                {user?.role === "secretary" ? (
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      No
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Hari/Tanggal
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Nama
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Umur
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        NIK
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Nomor Kontak
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Pekerjaan
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Alamat
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Maksud Tujuan
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Bidang
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Status
+                      </div>
+                    </th>
+                  </tr>
+                ) : (
+                  <tr>
+                    <th scope="col" className="px-6 py-3">
+                      No
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Hari/Tanggal
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Nama
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Maksud Tujuan
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Bidang
+                      </div>
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      <div className="flex items-center justify-center">
+                        Status
+                      </div>
+                    </th>
+                  </tr>
+                )}
               </thead>
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index} className="bg-white">
-                    <td
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                    >
-                      {index + 1 + page * limit}
-                    </td>
-                    <td className="px-6 py-4 text-center uppercase">
-                      {parseAndFormatDateString(item.createdAt)}
-                    </td>
-                    <td className="px-6 py-4 text-center uppercase">
-                      {item.name}
-                    </td>
-                    <td className="px-6 py-4 text-center uppercase">
-                      {item.purpose.name}
-                    </td>
-                    <td className="px-6 py-4 text-center uppercase">
-                      {item.division.name}
-                    </td>
-                    <td className="px-6 py-4 text-center uppercase">
-                      {item.status === "NOT COMPLETED" ? "Belum Selesai" : ""}
-                      {item.status === "COMPLETED" ? "Selesai" : ""}
-                      {item.status === "CANCELED" ? "Batal Proses" : ""}
-                    </td>
-                  </tr>
-                ))}
+                {user?.role === "secretary" ? (
+                  <>
+                    {" "}
+                    {data.map((item, number) => (
+                      <tr key={number} className="bg-white">
+                        <td
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                        >
+                          {number + 1}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {parseAndFormatDateString(item.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.age}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.citizenNumber}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.phoneNumber}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.profession}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.address}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.purpose?.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.division?.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item?.status === "NOT COMPLETED"
+                            ? "Belum Selesai"
+                            : ""}
+                          {item?.status === "COMPLETED" ? "Selesai" : ""}
+                          {item?.status === "CANCELED" ? "Batal Proses" : ""}
+                        </td>
+                      </tr>
+                    ))}{" "}
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    {data.map((item, index) => (
+                      <tr key={index} className="bg-white">
+                        <td
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                        >
+                          {index + 1 + page * limit}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {parseAndFormatDateString(item.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item.purpose.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item.division.name}
+                        </td>
+                        <td className="px-6 py-4 text-center uppercase">
+                          {item.status === "NOT COMPLETED"
+                            ? "Belum Selesai"
+                            : ""}
+                          {item.status === "COMPLETED" ? "Selesai" : ""}
+                          {item.status === "CANCELED" ? "Batal Proses" : ""}
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                )}
               </tbody>
             </table>
             <Pagination
