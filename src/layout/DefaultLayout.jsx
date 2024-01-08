@@ -261,7 +261,7 @@ const DefaultLayout = ({ children }) => {
         </div>
       </div>
       <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
-        <header className="sticky top-0 flex flex-col items-end w-full py-4 bg-white px-14 z-index drop-shadow-1 box__shadow">
+        <header className="text-white sticky top-0 flex flex-col items-end w-full py-4 bg-red-700 px-14 z-index drop-shadow-1 box__shadow">
           <h3 className="font-normal">
             {" "}
             Selamat datang,{" "}

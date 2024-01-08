@@ -155,7 +155,10 @@ const Visitors = () => {
               </thead>
               <tbody>
                 {data.map((item, number) => (
-                  <tr key={number} className="bg-white">
+                  <tr
+                    key={number}
+                    className={index % 2 === 0 ? "bg-gray-100" : "bg-white"} // Bergantian warna
+                  >
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
