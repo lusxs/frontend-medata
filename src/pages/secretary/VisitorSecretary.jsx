@@ -157,7 +157,7 @@ const Visitors = () => {
                 {data.map((item, number) => (
                   <tr
                     key={number}
-                    className={index % 2 === 0 ? "bg-gray-100" : "bg-white"} // Bergantian warna
+                    className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
                   >
                     <td
                       scope="row"
